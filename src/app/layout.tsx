@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
-import { Josefin_Sans, Lato } from "next/font/google";
+import { Raleway, Lato } from "next/font/google";
 import "@/styles/globals.css";
 
-const josefin = Josefin_Sans({
+const raleway = Raleway({
   subsets: ["latin"],
-  weight: ["100", "200", "300", "400"],
+  weight: ["100", "200", "300", "400", "500"],
   variable: "--font-heading",
   display: "swap",
 });
@@ -29,7 +29,7 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <html lang="en" className={`${josefin.variable} ${lato.variable}`}>
+      <html lang="en" className={`${raleway.variable} ${lato.variable}`}>
         <body className="min-h-screen bg-cream">{children}</body>
       </html>
     </ClerkProvider>

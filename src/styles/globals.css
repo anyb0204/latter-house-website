@@ -5,25 +5,12 @@
 @layer base {
   body {
     font-family: var(--font-body), sans-serif;
-    @apply bg-cream text-gray-800;
+    @apply bg-cream text-gray-700;
+    font-weight: 300;
   }
-  h1 {
+  h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading), sans-serif;
     font-weight: 200;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    @apply text-3xl;
-  }
-  h2 {
-    font-family: var(--font-heading), sans-serif;
-    font-weight: 300;
-    letter-spacing: 0.1em;
-    @apply text-2xl;
-  }
-  h3, h4, h5, h6 {
-    font-family: var(--font-heading), sans-serif;
-    font-weight: 300;
-    letter-spacing: 0.08em;
-    @apply text-xl;
+    letter-spacing: 0.12em;
   }
 }
