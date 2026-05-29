@@ -4,9 +4,12 @@
 
 @layer base {
   body {
-    @apply bg-cream text-gray-800 font-sans;
+    font-family: var(--font-body), sans-serif;
+    @apply bg-cream text-gray-800;
   }
-  h1, h2, h3, h4 {
-    @apply font-serif;
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading), Georgia, serif;
+    font-weight: 300;
+    letter-spacing: 0.02em;
   }
 }
