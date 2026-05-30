@@ -7,12 +7,12 @@ import { UserButton } from "@clerk/nextjs";
 import { clsx } from "clsx";
 
 const navItems = [
-  { href: "/dashboard", label: "Dashboard", icon: "🏠" },
-  { href: "/announcements", label: "Announcements", icon: "📢" },
-  { href: "/praise-reports", label: "Praise Reports", icon: "🙏" },
-  { href: "/opportunities", label: "Opportunities", icon: "✨" },
-  { href: "/brainstorm", label: "Brainstorm", icon: "💡" },
-  { href: "/journal", label: "My Journal", icon: "📓" },
+  { href: "/dashboard", label: "Dashboard" },
+  { href: "/announcements", label: "Announcements" },
+  { href: "/praise-reports", label: "Praise Reports" },
+  { href: "/opportunities", label: "Opportunities" },
+  { href: "/brainstorm", label: "Brainstorm" },
+  { href: "/journal", label: "My Journal" },
 ];
 
 const submitItems = [
@@ -28,7 +28,7 @@ export default function MemberSidebar() {
   const NavLinks = () => (
     <>
       <div className="mb-6">
-        <Link href="/" className="font-serif text-lg text-forest font-bold">
+        <Link href="/" className="text-forest font-light tracking-widest uppercase text-sm">
           Latter House Life
         </Link>
       </div>
@@ -38,19 +38,18 @@ export default function MemberSidebar() {
             key={item.href}
             href={item.href}
             className={clsx(
-              "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors",
+              "flex items-center gap-3 px-3 py-2 text-sm transition-colors tracking-wide",
               pathname === item.href
-                ? "bg-sage text-white"
-                : "text-gray-700 hover:bg-mint/20 hover:text-forest"
+                ? "bg-forest text-white"
+                : "text-gray-800 hover:bg-sage/20 hover:text-forest"
             )}
             onClick={() => setOpen(false)}
           >
-            <span>{item.icon}</span>
             {item.label}
           </Link>
         ))}
         <div className="pt-4">
-          <p className="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
+          <p className="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
             Submit
           </p>
           {submitItems.map((item) => (
@@ -58,10 +57,10 @@ export default function MemberSidebar() {
               key={item.href}
               href={item.href}
               className={clsx(
-                "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors",
+                "flex items-center gap-3 px-3 py-2 text-sm transition-colors tracking-wide",
                 pathname === item.href
-                  ? "bg-sage text-white"
-                  : "text-gray-700 hover:bg-mint/20 hover:text-forest"
+                  ? "bg-forest text-white"
+                  : "text-gray-800 hover:bg-sage/20 hover:text-forest"
               )}
               onClick={() => setOpen(false)}
             >
@@ -70,9 +69,9 @@ export default function MemberSidebar() {
           ))}
         </div>
       </nav>
-      <div className="mt-auto pt-6 border-t border-mint/30 flex items-center gap-3">
+      <div className="mt-auto pt-6 border-t border-gray-200 flex items-center gap-3">
         <UserButton afterSignOutUrl="/" />
-        <span className="text-sm text-gray-600">Account</span>
+        <span className="text-sm text-gray-700 font-medium">Account</span>
       </div>
     </>
   );
@@ -80,13 +79,13 @@ export default function MemberSidebar() {
   return (
     <>
       {/* Mobile topbar */}
-      <div className="md:hidden flex items-center justify-between bg-white border-b border-mint/30 px-4 h-14 fixed top-0 left-0 right-0 z-40">
-        <Link href="/dashboard" className="font-serif text-lg text-forest font-bold">
+      <div className="md:hidden flex items-center justify-between bg-forest px-4 h-14 fixed top-0 left-0 right-0 z-40">
+        <Link href="/dashboard" className="text-white text-sm font-light tracking-widest uppercase">
           Latter House Life
         </Link>
         <button
           onClick={() => setOpen(!open)}
-          className="p-2 text-gray-600 hover:text-forest"
+          className="p-2 text-white hover:text-gold"
           aria-label="Toggle menu"
         >
           <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -118,7 +117,7 @@ export default function MemberSidebar() {
       </div>
 
       {/* Desktop sidebar */}
-      <aside className="hidden md:flex md:flex-col w-56 bg-white border-r border-mint/30 min-h-screen p-4 fixed top-0 left-0 bottom-0">
+      <aside className="hidden md:flex md:flex-col w-56 bg-white border-r border-gray-200 min-h-screen p-4 fixed top-0 left-0 bottom-0">
         <NavLinks />
       </aside>
     </>
