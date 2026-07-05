@@ -1,103 +1,237 @@
 import Link from "next/link";
+import VideoBackground from "@/components/ui/VideoBackground";
+import { rooms } from "@/lib/navigation";
+
+const heroVideos = [
+  "https://videos.pexels.com/video-files/3571264/3571264-uhd_2560_1440_25fps.mp4",
+  "https://videos.pexels.com/video-files/854084/854084-hd_1920_1080_25fps.mp4",
+  "https://videos.pexels.com/video-files/3195394/3195394-uhd_2560_1440_25fps.mp4",
+];
 
 export default function LandingPage() {
   return (
     <>
-      {/* Hero */}
-      <section className="bg-gradient-to-br from-forest to-sage text-white py-20 px-4 text-center">
-        <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight">
-          The Latter House<br />
-          <span className="text-gold">Shall Be Greater</span>
-        </h1>
-        <p className="text-lg sm:text-xl text-white/85 max-w-2xl mx-auto mb-10">
-          Latter House Life is a community for believers who are pressing forward —
-          sharing testimonies, seizing opportunities, and growing together in faith.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link
-            href="/join"
-            className="bg-gold text-forest px-8 py-3 rounded-lg font-semibold text-lg hover:bg-yellow-400 transition-colors"
-          >
-            Join for Free
-          </Link>
-          <Link
-            href="/about"
-            className="border border-white/60 text-white px-8 py-3 rounded-lg font-semibold text-lg hover:bg-white/10 transition-colors"
-          >
-            Learn More
-          </Link>
+      {/* Hero with video background */}
+      <section className="relative min-h-[90vh] flex items-center justify-center">
+        <VideoBackground
+          src={heroVideos[0]}
+          overlay="dark"
+          className="absolute inset-0"
+        />
+        <div className="relative z-10 text-center px-4 sm:px-6 max-w-4xl mx-auto animate-fade-up">
+          <p className="text-champagne font-serif text-body-lg tracking-[0.2em] uppercase mb-6">
+            Welcome to Latter House Life
+          </p>
+          <h1 className="font-serif text-display-lg sm:text-display-xl text-white font-semibold mb-6 leading-tight">
+            Shed the Old.<br />
+            <span className="text-champagne-light">Step Into Your Purpose.</span>
+          </h1>
+          <p className="text-body-lg text-white/90 max-w-2xl mx-auto mb-10 leading-relaxed">
+            For believers ready to release outdated thinking and embrace God&apos;s individual
+            calling — using modern neuroscience and timeless faith to build His house, one day at a time.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/join" className="btn-primary">
+              Begin Your Journey — Free
+            </Link>
+            <Link href="/about" className="btn-secondary bg-white/10 border-white/40 text-white hover:bg-white/20">
+              Discover Our Mission
+            </Link>
+          </div>
+        </div>
+
+        {/* Scroll indicator */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-gentle-float">
+          <div className="w-6 h-10 rounded-full border-2 border-white/40 flex justify-center pt-2">
+            <div className="w-1 h-2 bg-champagne rounded-full" />
+          </div>
         </div>
       </section>
 
-      {/* Who it's for */}
-      <section className="py-16 px-4 bg-cream">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="font-serif text-3xl sm:text-4xl text-forest font-bold mb-4">
-            Built for Believers Who Are Moving Forward
-          </h2>
-          <p className="text-gray-600 text-lg max-w-2xl mx-auto mb-12">
-            Whether you&apos;re looking for ministry opportunities, want to share what God has done,
-            or simply need a community that understands the journey — this is your home.
+      {/* Scripture anchor */}
+      <section className="section-padding bg-gradient-peaceful text-center">
+        <blockquote className="max-w-3xl mx-auto">
+          <p className="font-serif text-heading-lg sm:text-display-md text-forest italic leading-relaxed mb-4">
+            &ldquo;The glory of this latter house shall be greater than of the former,
+            saith the LORD of hosts.&rdquo;
           </p>
-          <div className="grid sm:grid-cols-3 gap-8">
+          <footer className="text-body-base text-sage font-medium">— Haggai 2:9</footer>
+        </blockquote>
+      </section>
+
+      {/* What you'll find here */}
+      <section className="section-padding bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-14">
+            <h2 className="font-serif text-display-md text-forest font-semibold mb-4">
+              Your Daily Sanctuary
+            </h2>
+            <p className="text-body-lg text-forest/65 max-w-2xl mx-auto">
+              Every visit equips you with tools, encouragement, and community —
+              so you leave refreshed, renewed, and ready for forward motion.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               {
-                icon: "🙏",
-                title: "Share Praise Reports",
-                description: "Testify to what God has done in your life and encourage the community.",
+                icon: "✦",
+                title: "Daily Devotionals",
+                description: "Scripture, guided prayer, and curated worship playlists to start your morning in peace.",
               },
               {
-                icon: "✨",
-                title: "Discover Opportunities",
-                description: "Find jobs, volunteer roles, and mission opportunities aligned with your calling.",
+                icon: "◈",
+                title: "Vibrant Community",
+                description: "Connect with fellow believers, share praise reports, and walk together in faith.",
               },
               {
-                icon: "💡",
-                title: "Stay Inspired",
-                description: "Daily prompts and ideas to keep you moving forward in purpose and faith.",
+                icon: "◇",
+                title: "Neuroscience Tools",
+                description: "Practical exercises rooted in modern brain science to renew your mind and break old patterns.",
               },
-            ].map((feature) => (
-              <div key={feature.title} className="bg-white rounded-xl p-6 shadow-sm border border-mint/30">
-                <div className="text-4xl mb-4">{feature.icon}</div>
-                <h3 className="font-serif text-xl text-forest font-semibold mb-2">{feature.title}</h3>
-                <p className="text-gray-600 text-sm">{feature.description}</p>
+              {
+                icon: "◎",
+                title: "Message Boards",
+                description: "Meaningful conversations, prayer requests, and study groups at your fingertips.",
+              },
+              {
+                icon: "✧",
+                title: "Author Insights",
+                description: "Fresh blogs, teachings, and resources from the author of The Latter House.",
+              },
+              {
+                icon: "❋",
+                title: "Opportunities",
+                description: "Discover jobs, volunteer roles, and ways to serve that align with your calling.",
+              },
+            ].map((item) => (
+              <div
+                key={item.title}
+                className="glass-card p-8 hover:shadow-xl hover:border-champagne/50 transition-all duration-300 group"
+              >
+                <span className="text-3xl text-champagne block mb-4 group-hover:scale-110 transition-transform" aria-hidden>
+                  {item.icon}
+                </span>
+                <h3 className="font-serif text-heading-sm text-forest font-semibold mb-2">
+                  {item.title}
+                </h3>
+                <p className="text-body-sm text-forest/60">{item.description}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Why it matters */}
-      <section className="py-16 px-4 bg-white">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="font-serif text-3xl sm:text-4xl text-forest font-bold mb-4">
-            Why Latter House Life?
-          </h2>
-          <p className="text-gray-600 text-lg mb-8">
-            Community is essential to growth. We believe the church should be a place of
-            real connection — where testimonies are shared, gifts are discovered, and every
-            member moves forward together. Latter House Life exists to make that possible
-            beyond Sunday morning.
-          </p>
-          <blockquote className="border-l-4 border-gold pl-6 text-left italic text-gray-700 text-lg bg-cream rounded-r-lg py-4 pr-4">
-            &ldquo;The glory of this latter house shall be greater than of the former, saith the LORD of hosts.&rdquo;
-            <footer className="mt-2 text-sm font-medium text-forest not-italic">— Haggai 2:9</footer>
-          </blockquote>
+      {/* Video feature section */}
+      <section className="relative min-h-[500px] flex items-center">
+        <VideoBackground
+          src={heroVideos[1]}
+          overlay="medium"
+          className="absolute inset-0"
+        />
+        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-20 grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 className="font-serif text-display-md text-white font-semibold mb-6">
+              Renew Your Mind.<br />
+              <span className="text-champagne-light">Rebuild Your Life.</span>
+            </h2>
+            <p className="text-body-lg text-white/85 mb-6 leading-relaxed">
+              The Latter House invites you to release patterns that no longer serve God&apos;s
+              purpose for your life. Through faith-filled neuroscience techniques, you&apos;ll
+              discover practical ways to think differently — and live differently.
+            </p>
+            <Link href="/author" className="btn-primary">
+              Meet the Author
+            </Link>
+          </div>
+          <div className="glass-card p-8 bg-white/90">
+            <h3 className="font-serif text-heading-md text-forest font-semibold mb-4">
+              What Members Experience
+            </h3>
+            <ul className="space-y-4">
+              {[
+                "Wake up to a fresh devotional and worship playlist",
+                "Connect with friends who understand the journey",
+                "Access worksheets and neuroscience exercises",
+                "Find volunteer and career opportunities",
+                "End each day feeling equipped and inspired",
+              ].map((item) => (
+                <li key={item} className="flex gap-3 text-body-base text-forest/75">
+                  <span className="text-champagne flex-shrink-0" aria-hidden>✦</span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-16 px-4 bg-sage text-white text-center">
-        <h2 className="font-serif text-3xl sm:text-4xl font-bold mb-4">Ready to Join?</h2>
-        <p className="text-white/85 text-lg mb-8 max-w-xl mx-auto">
-          Membership is completely free. Create your account and start connecting with a community
-          that&apos;s moving forward.
+      {/* Explore the rooms */}
+      <section className="section-padding bg-cream">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-14">
+            <h2 className="font-serif text-display-md text-forest font-semibold mb-4">
+              Seven Rooms. One Purpose.
+            </h2>
+            <p className="text-body-lg text-forest/65 max-w-2xl mx-auto">
+              Each area of Latter House Life is designed like a peaceful room —
+              a space to explore, grow, and find exactly what you need today.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+            {rooms.map((room) => (
+              <Link
+                key={room.id}
+                href={room.href}
+                className="group bg-white rounded-2xl p-6 border border-sage/15 hover:border-champagne hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+              >
+                <span className="text-2xl text-champagne block mb-3" aria-hidden>{room.icon}</span>
+                <h3 className="font-serif text-heading-sm text-forest font-semibold mb-1">
+                  {room.label}
+                </h3>
+                <p className="text-body-sm text-forest/55">{room.tagline}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Community video section */}
+      <section className="relative min-h-[400px] flex items-center justify-center">
+        <VideoBackground
+          src={heroVideos[2]}
+          overlay="dark"
+          className="absolute inset-0"
+        />
+        <div className="relative z-10 text-center px-4 max-w-3xl">
+          <h2 className="font-serif text-display-md text-white font-semibold mb-4">
+            You Were Never Meant to Walk Alone
+          </h2>
+          <p className="text-body-lg text-white/85 mb-8">
+            Join a community of mature believers who are laughing, learning, building,
+            and moving forward together — every single day.
+          </p>
+          <Link href="/join" className="btn-primary text-body-lg px-12">
+            Join Our Community — It&apos;s Free
+          </Link>
+        </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="section-padding bg-gradient-sage text-center text-white">
+        <h2 className="font-serif text-display-md font-semibold mb-4">
+          Ready for Forward Motion?
+        </h2>
+        <p className="text-body-lg text-white/85 max-w-xl mx-auto mb-8">
+          Create your free account today and step into the latter house —
+          greater than anything that came before.
         </p>
         <Link
           href="/join"
-          className="bg-gold text-forest px-10 py-4 rounded-lg font-semibold text-lg hover:bg-yellow-400 transition-colors inline-block"
+          className="inline-flex items-center gap-2 px-12 py-4 rounded-full bg-champagne text-forest font-semibold text-body-lg hover:bg-champagne-light transition-colors shadow-lg"
         >
-          Join for Free
+          Enter Latter House Life
         </Link>
       </section>
     </>
