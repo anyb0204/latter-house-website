@@ -17,6 +17,17 @@ const overlayClasses = {
   dark: "bg-forest/65",
 };
 
+const videoMimeTypes: Record<string, string> = {
+  mp4: "video/mp4",
+  mov: "video/quicktime",
+  webm: "video/webm",
+};
+
+function mimeTypeForSrc(src: string): string {
+  const extension = src.split(".").pop()?.toLowerCase() ?? "";
+  return videoMimeTypes[extension] ?? "video/mp4";
+}
+
 export default function VideoBackground({
   src,
   poster,
@@ -32,12 +43,13 @@ export default function VideoBackground({
     video.play().catch(() => {
       // Autoplay may be blocked; poster still shows
     });
-  }, []);
+  }, [src]);
 
   return (
     <div className={clsx("relative overflow-hidden", className)}>
       <video
         ref={videoRef}
+        key={src}
         autoPlay
         muted
         loop
@@ -46,7 +58,7 @@ export default function VideoBackground({
         className="absolute inset-0 w-full h-full object-cover"
         aria-hidden
       >
-        <source src={src} type="video/mp4" />
+        <source src={src} type={mimeTypeForSrc(src)} />
       </video>
       <div className={clsx("absolute inset-0", overlayClasses[overlay])} />
       {children && <div className="relative z-10">{children}</div>}

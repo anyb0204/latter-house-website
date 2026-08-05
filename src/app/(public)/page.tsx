@@ -3,9 +3,9 @@ import VideoBackground from "@/components/ui/VideoBackground";
 import { rooms } from "@/lib/navigation";
 
 const heroVideos = [
-  "https://videos.pexels.com/video-files/3571264/3571264-uhd_2560_1440_25fps.mp4",
-  "https://videos.pexels.com/video-files/854084/854084-hd_1920_1080_25fps.mp4",
-  "https://videos.pexels.com/video-files/3195394/3195394-uhd_2560_1440_25fps.mp4",
+  "/videos/hero-worship.mp4",
+  "/videos/hero-community.mov",
+  "/videos/hero-worship.mp4",
 ];
 
 export default function LandingPage() {
