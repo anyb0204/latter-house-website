@@ -3,6 +3,14 @@ import VideoBackground from "@/components/ui/VideoBackground";
 import { rooms } from "@/lib/navigation";
 
 const heroVideos = [
+  "/videos/hero-worship.mp4",
+  "/videos/hero-community.mov",
+  "/videos/hero-worship.mp4",
+];
+
+// Original stock footage -- used automatically if a visitor's browser can't
+// play the file above (e.g. .mov playback outside Safari).
+const fallbackVideos = [
   "https://videos.pexels.com/video-files/3571264/3571264-uhd_2560_1440_25fps.mp4",
   "https://videos.pexels.com/video-files/854084/854084-hd_1920_1080_25fps.mp4",
   "https://videos.pexels.com/video-files/3195394/3195394-uhd_2560_1440_25fps.mp4",
@@ -15,6 +23,7 @@ export default function LandingPage() {
       <section className="relative min-h-[90vh] flex items-center justify-center">
         <VideoBackground
           src={heroVideos[0]}
+          fallbackSrc={fallbackVideos[0]}
           overlay="dark"
           className="absolute inset-0"
         />
@@ -126,6 +135,7 @@ export default function LandingPage() {
       <section className="relative min-h-[500px] flex items-center">
         <VideoBackground
           src={heroVideos[1]}
+          fallbackSrc={fallbackVideos[1]}
           overlay="medium"
           className="absolute inset-0"
         />
@@ -201,6 +211,7 @@ export default function LandingPage() {
       <section className="relative min-h-[400px] flex items-center justify-center">
         <VideoBackground
           src={heroVideos[2]}
+          fallbackSrc={fallbackVideos[2]}
           overlay="dark"
           className="absolute inset-0"
         />
