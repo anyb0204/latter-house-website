@@ -2,23 +2,30 @@ import { db } from "@/lib/db";
 import { brainstormPrompts } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import Card from "@/components/ui/Card";
+import MemberPageLayout from "@/components/layout/MemberPageLayout";
 
 const categoryColors: Record<string, string> = {
-  ministry: "bg-blue-50 border-blue-200 text-blue-800",
-  gratitude: "bg-amber-50 border-amber-200 text-amber-800",
-  action: "bg-green-50 border-green-200 text-green-800",
-  community: "bg-purple-50 border-purple-200 text-purple-800",
-  spiritual: "bg-teal-50 border-teal-200 text-teal-800",
-  service: "bg-rose-50 border-rose-200 text-rose-800",
-  general: "bg-gray-50 border-gray-200 text-gray-800",
+  ministry: "bg-sage/10 border-sage/30 text-forest",
+  gratitude: "bg-champagne/20 border-champagne/40 text-forest",
+  action: "bg-mint/20 border-mint/40 text-forest",
+  community: "bg-cream-dark border-sage/20 text-forest",
+  spiritual: "bg-sage/15 border-sage/25 text-forest",
+  service: "bg-champagne/15 border-champagne/30 text-forest",
+  general: "bg-cream border-sage/15 text-forest",
 };
 
 export default async function BrainstormPage() {
-  const prompts = await db
-    .select()
-    .from(brainstormPrompts)
-    .where(eq(brainstormPrompts.isActive, true))
-    .orderBy(brainstormPrompts.sortOrder);
+  let prompts: typeof brainstormPrompts.$inferSelect[] = [];
+
+  try {
+    prompts = await db
+      .select()
+      .from(brainstormPrompts)
+      .where(eq(brainstormPrompts.isActive, true))
+      .orderBy(brainstormPrompts.sortOrder);
+  } catch {
+    // Database may not be configured
+  }
 
   const grouped = prompts.reduce<Record<string, typeof prompts>>((acc, p) => {
     const cat = p.category || "general";
@@ -28,23 +35,21 @@ export default async function BrainstormPage() {
   }, {});
 
   return (
-    <div>
-      <h1 className="font-serif text-3xl text-forest font-bold mb-2">Forward Motion Ideas</h1>
-      <p className="text-gray-600 mb-8">
-        Practical prompts to keep you moving forward in faith and purpose. Pick one and act on it today.
-      </p>
-
+    <MemberPageLayout
+      title="Forward Motion Ideas"
+      subtitle="Practical prompts to keep you moving forward in faith and purpose. Pick one and act on it today."
+    >
       {Object.entries(grouped).map(([category, items]) => (
         <div key={category} className="mb-8">
-          <h2 className="font-serif text-xl text-forest font-semibold mb-4 capitalize">{category}</h2>
+          <h2 className="font-serif text-heading-sm text-forest font-semibold mb-4 capitalize">{category}</h2>
           <div className="grid sm:grid-cols-2 gap-3">
             {items.map((p) => (
               <div
                 key={p.id}
                 className={`rounded-xl border p-4 flex items-start gap-3 ${categoryColors[p.category] ?? categoryColors.general}`}
               >
-                <span className="text-gold mt-0.5 text-lg">✦</span>
-                <p className="text-sm font-medium">{p.text}</p>
+                <span className="text-champagne mt-0.5 text-lg" aria-hidden>✦</span>
+                <p className="text-body-sm font-medium">{p.text}</p>
               </div>
             ))}
           </div>
@@ -53,9 +58,9 @@ export default async function BrainstormPage() {
 
       {prompts.length === 0 && (
         <Card>
-          <p className="text-gray-500 text-center py-8">No prompts available yet. Run the seed script to populate brainstorm prompts.</p>
+          <p className="text-forest/50 text-center py-8">No prompts available yet. Check back soon for fresh inspiration.</p>
         </Card>
       )}
-    </div>
+    </MemberPageLayout>
   );
 }
