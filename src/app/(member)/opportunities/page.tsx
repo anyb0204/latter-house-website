@@ -7,6 +7,7 @@ import Input from "@/components/ui/Input";
 import Textarea from "@/components/ui/Textarea";
 import StatusBadge from "@/components/ui/StatusBadge";
 import Badge from "@/components/ui/Badge";
+import MemberPageLayout from "@/components/layout/MemberPageLayout";
 
 interface Opportunity {
   id: number;
@@ -68,14 +69,15 @@ export default function OpportunitiesPage() {
   }
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-2">
-        <h1 className="font-serif text-3xl text-forest font-bold">Opportunities</h1>
+    <MemberPageLayout
+      title="Opportunities"
+      subtitle="Discover and share ministry, volunteer, and career opportunities."
+      action={
         <Button onClick={() => setShowForm(!showForm)} variant="secondary" size="sm">
           {showForm ? "Cancel" : "+ Submit Opportunity"}
         </Button>
-      </div>
-      <p className="text-gray-600 mb-8">Discover and share ministry, volunteer, and career opportunities.</p>
+      }
+    >
 
       {showForm && (
         <Card className="mb-8">
@@ -156,6 +158,6 @@ export default function OpportunitiesPage() {
           </div>
         </>
       )}
-    </div>
+    </MemberPageLayout>
   );
 }
