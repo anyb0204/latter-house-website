@@ -1,2 +1,4 @@
-Flask>=3.0,<4.0
-beautifulsoup4>=4.12,<5.0
+#!/usr/bin/env bash
+set -euo pipefail
+cd "$(dirname "$0")"
+python3 app.py
