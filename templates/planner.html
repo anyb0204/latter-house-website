@@ -1,0 +1,2202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Latter House Life — Planner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400;1,500&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ── Reset ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+button{cursor:pointer;font-family:inherit;}
+input,textarea,select{font-family:inherit;}
+textarea{resize:vertical;}
+
+/* ── Brand tokens ── */
+:root{
+  --night:#0B171B;
+  --night-2:#13252B;
+  --cream:#FAF9F6;
+  --champagne:#F2EAD3;
+  --mint:#C4D9D2;
+  --sage:#8DA399;
+  --sage-dark:#6b8578;
+  --gold:#D4AF37;
+  --gold-dark:#AA7C11;
+  --gold-light:#FCEABB;
+  --text:#0B171B;
+  --text-muted:#5c6e6a;
+  --border:#ddd5c0;
+  --sidebar-w:230px;
+  --radius:2px;
+}
+
+/* ── Layout ── */
+body{
+  display:flex;
+  min-height:100vh;
+  background:var(--cream);
+  font-family:'Manrope',sans-serif;
+  font-size:0.9rem;
+  color:var(--text);
+  font-weight:300;
+}
+
+#sidebar{
+  width:var(--sidebar-w);
+  min-height:100vh;
+  background:var(--night);
+  display:flex;
+  flex-direction:column;
+  position:fixed;
+  top:0;left:0;bottom:0;
+  z-index:100;
+  overflow-y:auto;
+}
+
+#main{
+  margin-left:var(--sidebar-w);
+  flex:1;
+  min-height:100vh;
+  padding:2.5rem 2.5rem 4rem;
+  max-width:900px;
+}
+
+/* ── Sidebar ── */
+.sb-logo{
+  padding:1.75rem 1.5rem 1.25rem;
+  display:flex;
+  align-items:center;
+  gap:0.75rem;
+  border-bottom:1px solid rgba(255,255,255,0.07);
+}
+.sb-mono{
+  width:44px;height:44px;
+  border:1.5px solid var(--sage);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.sb-mono span{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1rem;
+  color:var(--sage);
+  letter-spacing:0.04em;
+}
+.sb-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1rem;
+  font-weight:400;
+  color:var(--cream);
+  line-height:1.3;
+}
+.sb-title em{
+  display:block;
+  font-style:italic;
+  font-size:0.75rem;
+  color:var(--sage);
+  font-family:'Manrope',sans-serif;
+  font-weight:300;
+}
+
+.sb-nav{
+  flex:1;
+  padding:1rem 0;
+}
+.sb-label{
+  padding:0.75rem 1.25rem 0.25rem;
+  font-size:0.6rem;
+  font-weight:600;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:rgba(141,163,153,0.55);
+}
+.sb-item{
+  display:flex;
+  align-items:center;
+  gap:0.65rem;
+  padding:0.6rem 1.25rem;
+  color:rgba(250,249,246,0.65);
+  font-size:0.78rem;
+  font-weight:400;
+  letter-spacing:0.02em;
+  text-decoration:none;
+  background:none;
+  border:none;
+  width:100%;
+  text-align:left;
+  transition:color 0.15s,background 0.15s;
+}
+.sb-item:hover{color:var(--cream);background:rgba(255,255,255,0.05);}
+.sb-item.active{color:var(--gold);background:rgba(212,175,55,0.08);}
+.sb-item svg{width:15px;height:15px;flex-shrink:0;opacity:0.7;}
+.sb-item.active svg{opacity:1;}
+
+.sb-footer{
+  padding:1rem 1.25rem 1.5rem;
+  border-top:1px solid rgba(255,255,255,0.07);
+  font-size:0.7rem;
+  color:rgba(250,249,246,0.35);
+}
+.sb-footer strong{display:block;color:rgba(250,249,246,0.55);margin-bottom:0.25rem;}
+.sb-footer form{margin-top:0.5rem;}
+.sb-footer button{
+  background:none;border:1px solid rgba(255,255,255,0.12);
+  padding:0.35rem 0.75rem;
+  color:rgba(250,249,246,0.45);
+  font-size:0.65rem;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+}
+.sb-footer button:hover{border-color:var(--gold);color:var(--gold);}
+
+/* ── Page structure ── */
+.page{display:none;}
+.page.active{display:block;}
+
+.eyebrow{
+  font-size:0.6rem;
+  font-weight:600;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--sage-dark);
+  margin-bottom:0.4rem;
+}
+.page-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:2rem;
+  font-weight:400;
+  color:var(--night);
+  margin-bottom:0.25rem;
+  line-height:1.2;
+}
+.page-sub{
+  font-size:0.78rem;
+  color:var(--text-muted);
+  margin-bottom:2rem;
+}
+.gold-rule{
+  width:36px;height:1px;
+  background:var(--gold);
+  margin:1rem 0 1.75rem;
+}
+
+/* ── Cards / Sections ── */
+.card{
+  background:#fff;
+  border:1px solid var(--border);
+  padding:1.5rem 1.75rem;
+  margin-bottom:1.5rem;
+}
+.card.champagne{background:var(--champagne);border-color:transparent;}
+.card.mint{background:var(--mint);border-color:transparent;}
+.card.night{background:var(--night);color:var(--cream);}
+
+.card-label{
+  font-size:0.6rem;
+  font-weight:600;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  color:var(--sage-dark);
+  margin-bottom:0.75rem;
+}
+.card.night .card-label{color:var(--sage);}
+
+.card-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.2rem;
+  font-weight:500;
+  margin-bottom:0.75rem;
+}
+
+/* ── Form elements ── */
+.field-input{
+  width:100%;
+  background:transparent;
+  border:none;
+  border-bottom:1px solid var(--border);
+  padding:0.45rem 0;
+  color:var(--text);
+  font-size:0.88rem;
+  outline:none;
+  transition:border-color 0.2s;
+}
+.field-input:focus{border-color:var(--gold);}
+.field-input::placeholder{color:#b0a898;}
+
+.field-textarea{
+  width:100%;
+  background:transparent;
+  border:1px solid var(--border);
+  padding:0.6rem 0.75rem;
+  color:var(--text);
+  font-size:0.88rem;
+  outline:none;
+  min-height:90px;
+  transition:border-color 0.2s;
+  font-family:'Cormorant Garamond',serif;
+  font-size:1rem;
+  line-height:1.6;
+}
+.field-textarea:focus{border-color:var(--gold);}
+.field-textarea::placeholder{color:#b0a898;font-style:italic;}
+
+.field-textarea.manrope{font-family:'Manrope',sans-serif;font-size:0.88rem;}
+
+/* affirmation textarea — big, italic, cormorant */
+.affirmation-ta{
+  width:100%;
+  background:transparent;
+  border:none;
+  border-bottom:1px solid var(--border);
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:1.3rem;
+  color:var(--night);
+  padding:0.5rem 0 0.75rem;
+  outline:none;
+  min-height:60px;
+  resize:none;
+  line-height:1.5;
+}
+.affirmation-ta:focus{border-color:var(--gold);}
+.affirmation-ta::placeholder{color:#c0b8a0;}
+
+/* ── Buttons ── */
+.btn{
+  padding:0.55rem 1.25rem;
+  border:none;
+  font-family:'Manrope',sans-serif;
+  font-size:0.7rem;
+  font-weight:600;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  transition:all 0.2s;
+}
+.btn-night{background:var(--night);color:var(--gold);}
+.btn-night:hover{background:var(--night-2);}
+.btn-outline{background:none;border:1px solid var(--border);color:var(--text-muted);}
+.btn-outline:hover{border-color:var(--gold);color:var(--night);}
+.btn-gold{background:var(--gold);color:var(--night);}
+.btn-gold:hover{background:var(--gold-dark);color:#fff;}
+.btn-sm{padding:0.35rem 0.8rem;font-size:0.65rem;}
+
+.add-row-btn{
+  display:flex;align-items:center;gap:0.4rem;
+  background:none;border:none;
+  color:var(--sage-dark);
+  font-size:0.72rem;
+  font-weight:500;
+  letter-spacing:0.08em;
+  padding:0.35rem 0;
+  margin-top:0.5rem;
+}
+.add-row-btn:hover{color:var(--gold-dark);}
+
+.remove-btn{
+  background:none;border:none;
+  color:#bbb;font-size:1rem;
+  padding:0 0.25rem;
+  line-height:1;
+  flex-shrink:0;
+}
+.remove-btn:hover{color:#c0392b;}
+
+/* ── Task rows ── */
+.task-row{
+  display:flex;align-items:center;gap:0.65rem;
+  padding:0.5rem 0;
+  border-bottom:1px solid rgba(0,0,0,0.05);
+}
+.task-check{
+  width:16px;height:16px;
+  border:1.5px solid var(--border);
+  border-radius:50%;
+  flex-shrink:0;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:border-color 0.2s,background 0.2s;
+}
+.task-check.done{background:var(--gold);border-color:var(--gold);}
+.task-check.done::after{content:'';width:5px;height:5px;background:#fff;border-radius:50%;}
+.task-input{
+  flex:1;background:transparent;border:none;
+  font-size:0.88rem;color:var(--text);outline:none;
+  padding:0.15rem 0;
+}
+.task-input.done-text{text-decoration:line-through;color:var(--text-muted);}
+
+/* ── Schedule ── */
+.schedule-grid{display:grid;grid-template-columns:48px 1fr;gap:0;}
+.schedule-row{display:contents;}
+.schedule-time{
+  font-size:0.65rem;color:var(--text-muted);
+  padding:0.4rem 0.5rem 0.4rem 0;
+  display:flex;align-items:center;
+  border-right:1px solid var(--border);
+  justify-content:flex-end;
+}
+.schedule-entry{
+  padding:0.35rem 0 0.35rem 0.75rem;
+  border-bottom:1px solid rgba(0,0,0,0.04);
+}
+.schedule-entry input{
+  width:100%;background:transparent;border:none;
+  font-size:0.85rem;color:var(--text);outline:none;padding:0;
+}
+
+/* ── Calendar ── */
+.cal-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:1rem;
+}
+.cal-nav{
+  display:flex;gap:0.35rem;
+}
+.cal-nav button{
+  background:none;border:1px solid var(--border);
+  padding:0.3rem 0.6rem;
+  font-size:0.75rem;color:var(--text-muted);
+}
+.cal-nav button:hover{border-color:var(--gold);color:var(--night);}
+
+.cal-grid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:2px;
+}
+.cal-dow{
+  text-align:center;
+  font-size:0.6rem;
+  font-weight:600;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--text-muted);
+  padding:0.4rem 0;
+}
+.cal-day{
+  min-height:52px;
+  padding:0.4rem;
+  border:1px solid transparent;
+  cursor:pointer;
+  transition:background 0.15s,border-color 0.15s;
+  position:relative;
+}
+.cal-day:hover{background:var(--champagne);border-color:var(--border);}
+.cal-day.today{border-color:var(--gold);}
+.cal-day.other-month .cal-day-num{color:#ccc;}
+.cal-day-num{
+  font-size:0.8rem;
+  font-family:'Cormorant Garamond',serif;
+  color:var(--text);
+  line-height:1;
+}
+.cal-dot{
+  width:5px;height:5px;
+  border-radius:50%;
+  background:var(--gold);
+  position:absolute;
+  bottom:5px;right:5px;
+}
+
+/* ── Year grid ── */
+.year-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1rem;
+}
+.year-month{
+  border:1px solid var(--border);
+  padding:0.75rem;
+  cursor:pointer;
+  transition:border-color 0.2s,background 0.2s;
+}
+.year-month:hover{border-color:var(--gold);background:var(--champagne);}
+.year-month-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.9rem;
+  font-weight:500;
+  color:var(--night);
+  margin-bottom:0.4rem;
+}
+.year-mini{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:1px;
+}
+.year-mini-day{
+  text-align:center;
+  font-size:0.55rem;
+  color:var(--text-muted);
+  padding:1px 0;
+  position:relative;
+}
+.year-mini-day.has-dot::after{
+  content:'';
+  width:3px;height:3px;
+  border-radius:50%;
+  background:var(--gold);
+  position:absolute;
+  bottom:0;left:50%;transform:translateX(-50%);
+}
+.year-mini-day.is-today{color:var(--gold);font-weight:600;}
+
+/* ── Week view ── */
+.week-grid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:0.5rem;
+}
+.week-col{
+  border:1px solid var(--border);
+  padding:0.75rem 0.6rem;
+  min-height:160px;
+  cursor:pointer;
+  transition:border-color 0.2s;
+}
+.week-col:hover{border-color:var(--gold);}
+.week-col.today-col{border-color:var(--gold);background:rgba(212,175,55,0.04);}
+.week-dow{
+  font-size:0.6rem;font-weight:600;
+  letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--text-muted);margin-bottom:0.15rem;
+}
+.week-date{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.2rem;color:var(--night);
+  margin-bottom:0.5rem;
+}
+.week-dot{
+  width:5px;height:5px;border-radius:50%;
+  background:var(--gold);margin-bottom:0.5rem;
+}
+.week-note{
+  width:100%;background:transparent;border:none;
+  font-size:0.75rem;color:var(--text);
+  outline:none;resize:none;
+  font-family:'Manrope',sans-serif;
+  line-height:1.5;
+  min-height:80px;
+}
+
+/* ── Tracker rows ── */
+.tracker-row{
+  display:flex;gap:0.5rem;align-items:flex-start;
+  padding:0.75rem 0;
+  border-bottom:1px solid rgba(0,0,0,0.06);
+}
+.tracker-row:last-child{border-bottom:none;}
+.tracker-row input{
+  flex:1;background:transparent;
+  border:none;border-bottom:1px solid var(--border);
+  padding:0.3rem 0;font-size:0.85rem;
+  color:var(--text);outline:none;
+}
+.tracker-row input:focus{border-color:var(--gold);}
+
+.med-card{
+  border:1px solid var(--border);
+  padding:1rem 1.25rem;
+  margin-bottom:0.75rem;
+  background:#fff;
+  position:relative;
+}
+.med-card .remove-btn{position:absolute;top:0.75rem;right:0.75rem;}
+.med-name-row{display:flex;gap:0.5rem;margin-bottom:0.6rem;padding-right:1.5rem;}
+.med-times{display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:0.6rem;}
+.med-times label{
+  display:flex;align-items:center;gap:0.3rem;
+  font-size:0.75rem;color:var(--text-muted);cursor:pointer;
+}
+.med-times input[type=checkbox]{
+  width:13px;height:13px;accent-color:var(--gold);
+}
+
+/* ── Finance ── */
+.finance-section{margin-bottom:1.5rem;}
+.finance-section h3{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.1rem;font-weight:500;
+  margin-bottom:0.75rem;
+  color:var(--night);
+}
+.finance-row{
+  display:grid;
+  grid-template-columns:100px 1fr 90px auto;
+  gap:0.5rem;align-items:center;
+  padding:0.4rem 0;
+  border-bottom:1px solid rgba(0,0,0,0.05);
+}
+.finance-row input{
+  width:100%;background:transparent;border:none;
+  font-size:0.83rem;color:var(--text);outline:none;
+  padding:0.2rem 0;
+}
+.finance-total{
+  text-align:right;
+  font-family:'Cormorant Garamond',serif;
+  font-size:0.9rem;
+  color:var(--text-muted);
+  margin-top:0.5rem;
+  padding-right:1.5rem;
+}
+
+/* ── Grocery ── */
+.grocery-row{
+  display:flex;align-items:center;gap:0.5rem;
+  padding:0.4rem 0;
+  border-bottom:1px solid rgba(0,0,0,0.05);
+}
+.grocery-check{
+  width:15px;height:15px;
+  border:1.5px solid var(--border);
+  border-radius:50%;
+  flex-shrink:0;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all 0.15s;
+}
+.grocery-check.done{background:var(--sage);border-color:var(--sage);}
+.grocery-check.done::after{content:'✓';font-size:0.6rem;color:#fff;}
+.grocery-item-input{
+  flex:1;background:transparent;border:none;
+  font-size:0.85rem;color:var(--text);outline:none;
+}
+.grocery-item-input.done-item{
+  text-decoration:line-through;color:var(--text-muted);
+}
+
+/* ── Truth section ── */
+.truth-response{
+  margin-top:1rem;
+  padding:1rem 1.25rem;
+  background:rgba(255,255,255,0.6);
+  border-left:3px solid var(--gold);
+  display:none;
+}
+.truth-response.show{display:block;}
+.truth-response p{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:1.05rem;
+  line-height:1.6;
+  color:var(--night);
+  margin-bottom:0.35rem;
+}
+.truth-response cite{
+  font-size:0.7rem;font-weight:600;
+  letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--sage-dark);
+  font-style:normal;
+}
+
+/* ── Priorities ── */
+.priority-row{
+  display:flex;align-items:center;gap:0.75rem;
+  padding:0.5rem 0;
+  border-bottom:1px solid rgba(0,0,0,0.05);
+}
+.priority-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.5rem;color:var(--gold);
+  width:20px;flex-shrink:0;line-height:1;
+}
+
+/* ── Gratitude ── */
+.gratitude-row{
+  display:flex;align-items:center;gap:0.65rem;
+  padding:0.45rem 0;
+  border-bottom:1px solid rgba(0,0,0,0.05);
+}
+.gratitude-icon{color:var(--gold);font-size:0.9rem;flex-shrink:0;}
+
+/* ── Goal rows ── */
+.goal-card{
+  border:1px solid var(--border);
+  padding:0.85rem 1rem;
+  margin-bottom:0.6rem;
+  position:relative;
+  display:grid;
+  grid-template-columns:1fr 120px auto;
+  gap:0.5rem;
+  align-items:center;
+}
+.goal-card input{
+  background:transparent;border:none;
+  font-size:0.88rem;color:var(--text);outline:none;
+}
+.goal-card input[type=date]{font-size:0.78rem;color:var(--text-muted);}
+
+/* ── Toast ── */
+#toast{
+  position:fixed;bottom:1.5rem;right:1.5rem;
+  background:var(--night);color:var(--gold);
+  padding:0.5rem 1rem;
+  font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;
+  opacity:0;pointer-events:none;
+  transition:opacity 0.25s;
+  z-index:999;
+}
+#toast.show{opacity:1;}
+
+/* ── Month nav header ── */
+.month-nav-row{
+  display:flex;align-items:center;gap:0.75rem;
+  margin-bottom:1.5rem;
+}
+.month-nav-row span{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.1rem;color:var(--night);
+  min-width:120px;
+}
+.month-nav-row button{
+  background:none;border:1px solid var(--border);
+  padding:0.25rem 0.55rem;font-size:0.75rem;
+  color:var(--text-muted);
+}
+.month-nav-row button:hover{border-color:var(--gold);color:var(--night);}
+
+/* ── Mobile ── */
+@media(max-width:768px){
+  #sidebar{
+    width:100%;min-height:auto;height:auto;
+    position:fixed;bottom:0;top:auto;
+    flex-direction:row;
+    overflow-x:auto;overflow-y:hidden;
+    border-top:1px solid rgba(255,255,255,0.07);
+    padding:0;
+  }
+  .sb-logo{display:none;}
+  .sb-nav{display:flex;flex-direction:row;padding:0;flex:1;}
+  .sb-label{display:none;}
+  .sb-item{
+    flex-direction:column;gap:0.2rem;
+    padding:0.5rem 0.65rem;
+    font-size:0.58rem;letter-spacing:0.04em;
+    min-width:60px;white-space:nowrap;
+  }
+  .sb-item svg{width:18px;height:18px;}
+  .sb-footer{display:none;}
+  #main{margin-left:0;padding:1.25rem 1.25rem 5rem;max-width:100%;}
+  .year-grid{grid-template-columns:repeat(2,1fr);}
+  .week-grid{grid-template-columns:repeat(4,1fr);}
+  .finance-row{grid-template-columns:80px 1fr 70px auto;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════ SIDEBAR ══════════════════════ -->
+<nav id="sidebar">
+  <div class="sb-logo">
+    <div class="sb-mono"><span>lhl</span></div>
+    <div class="sb-title">Latter House<em>Life Planner</em></div>
+  </div>
+
+  <div class="sb-nav">
+    <div class="sb-label">Calendar</div>
+    <button class="sb-item active" data-page="today">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      Today
+    </button>
+    <button class="sb-item" data-page="week">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/></svg>
+      Week
+    </button>
+    <button class="sb-item" data-page="month">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg>
+      Month
+    </button>
+    <button class="sb-item" data-page="year">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12h20M12 2v20"/><circle cx="12" cy="12" r="10"/></svg>
+      Year
+    </button>
+
+    <div class="sb-label">Reflection</div>
+    <button class="sb-item" data-page="brain">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9.5 2a2.5 2.5 0 0 1 5 0v.5a3 3 0 0 1-3 3H9a3 3 0 0 0-3 3v.5A4.5 4.5 0 0 0 10.5 13H12m-3 0a3 3 0 0 0 6 0v-1.5M12 13v6m0 0H9m3 0h3"/></svg>
+      Brain Dump
+    </button>
+    <button class="sb-item" data-page="truth">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+      Truth
+    </button>
+
+    <div class="sb-label">Trackers</div>
+    <button class="sb-item" data-page="meds">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 3H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-3M9 3a1 1 0 0 0 1 1h4a1 1 0 0 0 0-2H10a1 1 0 0 0-1 1M12 11v6M9 14h6"/></svg>
+      Medication
+    </button>
+    <button class="sb-item" data-page="health">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      Health
+    </button>
+    <button class="sb-item" data-page="symptoms">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+      Symptoms
+    </button>
+    <button class="sb-item" data-page="finance">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v2m0 8v2M9.5 9.5a2.5 2.5 0 0 1 5 0c0 3-5 3-5 6h5"/></svg>
+      Finance
+    </button>
+    <button class="sb-item" data-page="grocery">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      Grocery
+    </button>
+    <button class="sb-item" data-page="business">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+      Business
+    </button>
+    <button class="sb-item" data-page="goals">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+      Goals
+    </button>
+  </div>
+
+  <div class="sb-footer">
+    <strong>{{ user.username }}</strong>
+    Latter House Life Planner
+    <form method="POST" action="/logout">
+      <button type="submit">Sign out</button>
+    </form>
+  </div>
+</nav>
+
+<!-- ══════════════════════ MAIN ══════════════════════ -->
+<main id="main">
+
+<!-- ─── TODAY ─── -->
+<div id="page-today" class="page active">
+  <div class="eyebrow" id="today-eyebrow">Daily Planner</div>
+  <h1 class="page-title" id="today-date-heading"></h1>
+  <div class="gold-rule"></div>
+
+  <!-- Affirmation -->
+  <div class="card champagne" style="margin-bottom:1.5rem;">
+    <div class="card-label">Today I am a woman who…</div>
+    <textarea class="affirmation-ta" id="td-affirmation" placeholder="Not the woman you were — but the one God is calling you to become. Speak her into today." rows="2"></textarea>
+  </div>
+
+  <!-- Scripture -->
+  <div class="card" style="margin-bottom:1.5rem;display:flex;align-items:flex-start;gap:1rem;">
+    <div style="flex:1;">
+      <div class="card-label">Today's Word</div>
+      <p id="daily-scripture" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;line-height:1.6;margin-bottom:0.25rem;"></p>
+      <cite id="daily-scripture-ref" style="font-size:0.65rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--sage-dark);font-style:normal;"></cite>
+    </div>
+  </div>
+
+  <!-- Truth -->
+  <div class="card mint" style="margin-bottom:1.5rem;">
+    <div class="card-label">Arm Yourself with Truth</div>
+    <p style="font-size:0.8rem;color:var(--sage-dark);margin-bottom:0.75rem;">Name the lie you know you'll face today — then let God's Word replace it.</p>
+    <input class="field-input" id="td-lie" placeholder="The lie I tend to believe is…" style="margin-bottom:0.75rem;">
+    <button class="btn btn-night btn-sm" id="reveal-truth-btn">Reveal God's Truth →</button>
+    <div class="truth-response" id="truth-response">
+      <p id="truth-response-text"></p>
+      <cite id="truth-response-cite"></cite>
+    </div>
+  </div>
+
+  <!-- Priorities -->
+  <div class="card" style="margin-bottom:1.5rem;">
+    <div class="card-label">Top Priorities</div>
+    <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:0.75rem;">What does that woman accomplish today?</p>
+    <div class="priority-row"><span class="priority-num">1</span><input class="field-input" id="td-p1" placeholder="First thing…"></div>
+    <div class="priority-row"><span class="priority-num">2</span><input class="field-input" id="td-p2" placeholder="Second…"></div>
+    <div class="priority-row"><span class="priority-num">3</span><input class="field-input" id="td-p3" placeholder="Third…"></div>
+  </div>
+
+  <!-- Schedule -->
+  <div class="card" style="margin-bottom:1.5rem;">
+    <div class="card-label">Schedule</div>
+    <div class="schedule-grid" id="schedule-grid"></div>
+  </div>
+
+  <!-- Tasks -->
+  <div class="card" style="margin-bottom:1.5rem;">
+    <div class="card-label">Tasks</div>
+    <div id="task-list"></div>
+    <button class="add-row-btn" id="add-task-btn">+ Add task</button>
+  </div>
+
+  <!-- Gratitude -->
+  <div class="card champagne" style="margin-bottom:1.5rem;">
+    <div class="card-label">Gratitude</div>
+    <div class="gratitude-row"><span class="gratitude-icon">✦</span><input class="field-input" id="td-g1" placeholder="I am grateful for…"></div>
+    <div class="gratitude-row"><span class="gratitude-icon">✦</span><input class="field-input" id="td-g2" placeholder=""></div>
+    <div class="gratitude-row"><span class="gratitude-icon">✦</span><input class="field-input" id="td-g3" placeholder=""></div>
+  </div>
+
+  <!-- Notes -->
+  <div class="card" style="margin-bottom:1.5rem;">
+    <div class="card-label">Notes &amp; Reflection</div>
+    <textarea class="field-textarea" id="td-notes" placeholder="Evening thoughts, what you noticed, what God was doing…" rows="4"></textarea>
+  </div>
+
+  <!-- Day nav -->
+  <div style="display:flex;gap:0.75rem;margin-top:0.5rem;">
+    <button class="btn btn-outline btn-sm" id="prev-day-btn">← Previous Day</button>
+    <button class="btn btn-outline btn-sm" id="next-day-btn">Next Day →</button>
+  </div>
+</div>
+
+
+<!-- ─── WEEK ─── -->
+<div id="page-week" class="page">
+  <div class="eyebrow">Weekly View</div>
+  <div class="cal-header">
+    <h1 class="page-title" id="week-heading" style="margin-bottom:0;"></h1>
+    <div class="cal-nav">
+      <button id="prev-week-btn">← Prev</button>
+      <button id="today-week-btn">This Week</button>
+      <button id="next-week-btn">Next →</button>
+    </div>
+  </div>
+  <div class="gold-rule"></div>
+  <p class="page-sub">Click any day to open its full planner.</p>
+  <div class="week-grid" id="week-grid"></div>
+</div>
+
+
+<!-- ─── MONTH ─── -->
+<div id="page-month" class="page">
+  <div class="eyebrow">Monthly View</div>
+  <div class="cal-header">
+    <h1 class="page-title" id="month-heading" style="margin-bottom:0;"></h1>
+    <div class="cal-nav">
+      <button id="prev-month-btn">← Prev</button>
+      <button id="today-month-btn">This Month</button>
+      <button id="next-month-btn">Next →</button>
+    </div>
+  </div>
+  <div class="gold-rule"></div>
+  <p class="page-sub">Click a date to open that day's planner.</p>
+  <div class="cal-grid" id="month-grid"></div>
+</div>
+
+
+<!-- ─── YEAR ─── -->
+<div id="page-year" class="page">
+  <div class="eyebrow">Yearly View</div>
+  <div class="cal-header">
+    <h1 class="page-title" id="year-heading" style="margin-bottom:0;"></h1>
+    <div class="cal-nav">
+      <button id="prev-year-btn">← Prev</button>
+      <button id="this-year-btn">This Year</button>
+      <button id="next-year-btn">Next →</button>
+    </div>
+  </div>
+  <div class="gold-rule"></div>
+  <p class="page-sub">Click a month to view its calendar.</p>
+  <div class="year-grid" id="year-grid"></div>
+</div>
+
+
+<!-- ─── BRAIN DUMP ─── -->
+<div id="page-brain" class="page">
+  <div class="eyebrow">Reflection</div>
+  <h1 class="page-title">Brain Dump</h1>
+  <div class="gold-rule"></div>
+  <p class="page-sub">Get it all out. No editing. No judgment.</p>
+  <div class="month-nav-row">
+    <button id="prev-brain-btn">←</button>
+    <span id="brain-month-label"></span>
+    <button id="next-brain-btn">→</button>
+  </div>
+  <div class="card" style="padding:0;">
+    <textarea class="field-textarea manrope" id="brain-text" placeholder="Write everything on your mind…" rows="16" style="border:none;padding:1.5rem 1.75rem;min-height:400px;"></textarea>
+  </div>
+</div>
+
+
+<!-- ─── TRUTH ─── -->
+<div id="page-truth" class="page">
+  <div class="eyebrow">Arm Yourself</div>
+  <h1 class="page-title">Truth Generator</h1>
+  <div class="gold-rule"></div>
+  <p class="page-sub">"What God says is truer than what fear says."</p>
+
+  <div class="card mint" style="margin-bottom:1.5rem;">
+    <div class="card-label">Today's Scripture</div>
+    <p id="truth-page-scripture" style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;line-height:1.7;margin-bottom:0.35rem;"></p>
+    <cite id="truth-page-ref" style="font-size:0.65rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--sage-dark);font-style:normal;"></cite>
+  </div>
+
+  <div class="card champagne">
+    <div class="card-label">Name the lie — receive the truth</div>
+    <textarea class="field-textarea" id="truth-lie-input" placeholder="The lie I tend to believe is… (e.g. 'I'm too far behind to matter')" rows="3" style="margin-bottom:1rem;"></textarea>
+    <button class="btn btn-night" id="truth-page-reveal-btn">Reveal God's Truth →</button>
+    <div class="truth-response" id="truth-page-response" style="margin-top:1rem;">
+      <p id="truth-page-response-text"></p>
+      <cite id="truth-page-response-cite"></cite>
+    </div>
+  </div>
+</div>
+
+
+<!-- ─── MEDICATION ─── -->
+<div id="page-meds" class="page">
+  <div class="eyebrow">Health Tracker</div>
+  <h1 class="page-title">Medication</h1>
+  <div class="gold-rule"></div>
+  <div class="month-nav-row">
+    <button id="prev-meds-btn">←</button>
+    <span id="meds-month-label"></span>
+    <button id="next-meds-btn">→</button>
+  </div>
+  <div id="meds-list"></div>
+  <button class="btn btn-outline btn-sm add-row-btn" id="add-med-btn">+ Add Medication</button>
+</div>
+
+
+<!-- ─── HEALTH ─── -->
+<div id="page-health" class="page">
+  <div class="eyebrow">Health Tracker</div>
+  <h1 class="page-title">Health Appointments</h1>
+  <div class="gold-rule"></div>
+  <div class="month-nav-row">
+    <button id="prev-health-btn">←</button>
+    <span id="health-month-label"></span>
+    <button id="next-health-btn">→</button>
+  </div>
+  <div id="health-list"></div>
+  <button class="btn btn-outline btn-sm add-row-btn" id="add-health-btn">+ Add Appointment</button>
+</div>
+
+
+<!-- ─── SYMPTOMS ─── -->
+<div id="page-symptoms" class="page">
+  <div class="eyebrow">Health Tracker</div>
+  <h1 class="page-title">Symptom Log</h1>
+  <div class="gold-rule"></div>
+  <div class="month-nav-row">
+    <button id="prev-symptoms-btn">←</button>
+    <span id="symptoms-month-label"></span>
+    <button id="next-symptoms-btn">→</button>
+  </div>
+  <div class="card" style="padding:0.75rem 1.25rem;">
+    <div style="display:grid;grid-template-columns:2fr 80px 90px auto;gap:0.5rem;padding:0.4rem 0;border-bottom:1px solid var(--border);">
+      <span style="font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);">Symptom</span>
+      <span style="font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);">Severity</span>
+      <span style="font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);">Time</span>
+      <span></span>
+    </div>
+    <div id="symptoms-list"></div>
+    <button class="add-row-btn" id="add-symptom-btn">+ Add symptom</button>
+  </div>
+</div>
+
+
+<!-- ─── FINANCE ─── -->
+<div id="page-finance" class="page">
+  <div class="eyebrow">Financial Tracker</div>
+  <h1 class="page-title">Finance</h1>
+  <div class="gold-rule"></div>
+  <div class="month-nav-row">
+    <button id="prev-finance-btn">←</button>
+    <span id="finance-month-label"></span>
+    <button id="next-finance-btn">→</button>
+  </div>
+
+  <div class="finance-section">
+    <h3>Income</h3>
+    <div class="card" style="padding:0.75rem 1.25rem;">
+      <div style="display:grid;grid-template-columns:100px 1fr 90px auto;gap:0.5rem;padding:0.4rem 0;border-bottom:1px solid var(--border);">
+        <span style="font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);">Date</span>
+        <span style="font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);">Source</span>
+        <span style="font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);">Amount</span>
+        <span></span>
+      </div>
+      <div id="income-list"></div>
+      <button class="add-row-btn" id="add-income-btn">+ Add income</button>
+      <p class="finance-total">Total: <strong id="income-total">$0.00</strong></p>
+    </div>
+  </div>
+
+  <div class="finance-section">
+    <h3>Bills</h3>
+    <div class="card" style="padding:0.75rem 1.25rem;">
+      <div style="display:grid;grid-template-columns:auto 100px 1fr 90px auto;gap:0.5rem;padding:0.4rem 0;border-bottom:1px solid var(--border);">
+        <span></span>
+        <span style="font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);">Due</span>
+        <span style="font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);">Bill</span>
+        <span style="font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);">Amount</span>
+        <span></span>
+      </div>
+      <div id="bills-list"></div>
+      <button class="add-row-btn" id="add-bill-btn">+ Add bill</button>
+      <p class="finance-total">Total: <strong id="bills-total">$0.00</strong></p>
+    </div>
+  </div>
+
+  <div class="finance-section">
+    <h3>Savings Goals</h3>
+    <div class="card" style="padding:0.75rem 1.25rem;">
+      <div style="display:grid;grid-template-columns:1fr 100px 100px auto;gap:0.5rem;padding:0.4rem 0;border-bottom:1px solid var(--border);">
+        <span style="font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);">Goal</span>
+        <span style="font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);">Target</span>
+        <span style="font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);">Saved</span>
+        <span></span>
+      </div>
+      <div id="savings-list"></div>
+      <button class="add-row-btn" id="add-savings-btn">+ Add savings goal</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ─── GROCERY ─── -->
+<div id="page-grocery" class="page">
+  <div class="eyebrow">Household</div>
+  <h1 class="page-title">Grocery List</h1>
+  <div class="gold-rule"></div>
+  <p class="page-sub">Your running list — check off as you shop.</p>
+  <div class="card" style="padding:0.75rem 1.25rem;margin-bottom:1rem;">
+    <div id="grocery-list"></div>
+    <button class="add-row-btn" id="add-grocery-btn">+ Add item</button>
+  </div>
+  <button class="btn btn-outline btn-sm" id="clear-done-grocery-btn">Remove checked items</button>
+</div>
+
+
+<!-- ─── BUSINESS ─── -->
+<div id="page-business" class="page">
+  <div class="eyebrow">Work Tracker</div>
+  <h1 class="page-title">Business</h1>
+  <div class="gold-rule"></div>
+  <div class="month-nav-row">
+    <button id="prev-business-btn">←</button>
+    <span id="business-month-label"></span>
+    <button id="next-business-btn">→</button>
+  </div>
+
+  <div class="card" style="margin-bottom:1.5rem;padding:0.75rem 1.25rem;">
+    <div class="card-label">Projects &amp; Revenue</div>
+    <div style="display:grid;grid-template-columns:1fr 90px 90px auto;gap:0.5rem;padding:0.4rem 0;border-bottom:1px solid var(--border);">
+      <span style="font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);">Project / Product</span>
+      <span style="font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);">Expense</span>
+      <span style="font-size:0.65rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);">Revenue</span>
+      <span></span>
+    </div>
+    <div id="biz-list"></div>
+    <button class="add-row-btn" id="add-biz-btn">+ Add project</button>
+    <div style="display:flex;gap:2rem;margin-top:0.75rem;justify-content:flex-end;font-size:0.83rem;color:var(--text-muted);">
+      <span>Expenses: <strong id="biz-expense-total">$0.00</strong></span>
+      <span>Revenue: <strong id="biz-revenue-total">$0.00</strong></span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Monthly Notes</div>
+    <textarea class="field-textarea manrope" id="biz-notes" placeholder="Strategy, follow-ups, wins this month…" rows="5"></textarea>
+  </div>
+</div>
+
+
+<!-- ─── GOALS ─── -->
+<div id="page-goals" class="page">
+  <div class="eyebrow">Vision</div>
+  <h1 class="page-title">Goals</h1>
+  <div class="gold-rule"></div>
+  <p class="page-sub">What is the woman God is building you into working toward?</p>
+  <div id="goals-list"></div>
+  <button class="btn btn-outline btn-sm add-row-btn" id="add-goal-btn">+ Add goal</button>
+</div>
+
+</main>
+
+<!-- Toast -->
+<div id="toast">Saved</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   LATTER HOUSE LIFE PLANNER — Frontend
+   ═══════════════════════════════════════════════════════ */
+const SCRIPTURES = [
+  {ref:'Isaiah 40:31', text:'But they that wait upon the Lord shall renew their strength; they shall mount up with wings as eagles.'},
+  {ref:'Psalm 46:10', text:'Be still, and know that I am God.'},
+  {ref:'Proverbs 3:5-6', text:'Trust in the Lord with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths.'},
+  {ref:'Philippians 4:13', text:'I can do all things through Christ which strengtheneth me.'},
+  {ref:'Lamentations 3:22-23', text:'His mercies are new every morning; great is thy faithfulness.'},
+  {ref:'Joshua 1:9', text:'Be strong and of good courage; be not afraid, neither be thou dismayed: for the Lord thy God is with thee.'},
+  {ref:'Romans 8:28', text:'All things work together for good to them that love God, to them who are the called according to his purpose.'},
+  {ref:'Psalm 23:1', text:'The Lord is my shepherd; I shall not want.'},
+  {ref:'2 Timothy 1:7', text:'For God hath not given us the spirit of fear; but of power, and of love, and of a sound mind.'},
+  {ref:'Galatians 6:9', text:'Let us not be weary in well doing: for in due season we shall reap, if we faint not.'},
+  {ref:'Jeremiah 29:11', text:'For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, plans to give you hope and a future.'},
+  {ref:'Haggai 2:9', text:'The glory of this latter house shall be greater than of the former, saith the Lord of hosts.'},
+];
+
+const TRUTH_LIB = [
+  {match:/(not good enough|worthless|not enough|failure|mess|too much)/i,
+   text:'You are fearfully and wonderfully made. God called you equipped and anointed — not because you earned it, but because He chose it.',
+   ref:'Psalm 139:14'},
+  {match:/(behind|late|too far|missed|wasted|too old)/i,
+   text:'You are not behind God\'s timing. He restores the years and His plans for you are still good — not downgraded, not delayed.',
+   ref:'Joel 2:25'},
+  {match:/(alone|nobody|abandoned|forgotten|unseen)/i,
+   text:'God will never leave you nor forsake you. You are seen and known by name — not by your output, but by your being.',
+   ref:'Deuteronomy 31:6'},
+  {match:/(afraid|fear|scared|anxious|worried|panic)/i,
+   text:'God has not given you a spirit of fear, but of power, love, and a sound mind. Fear does not get the final word today.',
+   ref:'2 Timothy 1:7'},
+  {match:/(can\'t|cannot|too hard|impossible|won\'t work|give up)/i,
+   text:'What feels impossible is possible with God. You are not carrying this alone — and you were never meant to.',
+   ref:'Philippians 4:13'},
+  {match:/(tired|exhausted|weary|burned out|depleted)/i,
+   text:'He gives strength to the weary. He renews the strength of those who wait on Him. Rest is not defeat — it is wisdom.',
+   ref:'Isaiah 40:29'},
+  {match:/(unlovable|unloved|unwanted|unworthy)/i,
+   text:'You are loved with an everlasting love. Nothing — no season, no failure, no silence — can separate you from the love of God.',
+   ref:'Jeremiah 31:3'},
+  {match:/.*/,
+   text:'What God says about you is more true than what fear says. You are chosen, covered, and still being led by His faithful hand.',
+   ref:'Romans 8:28'},
+];
+
+const HOURS = ['5am','6am','7am','8am','9am','10am','11am','12pm','1pm','2pm','3pm','4pm','5pm','6pm','7pm','8pm','9pm','10pm'];
+const MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MONTHS_LONG = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const DAYS_SHORT = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const DAYS_LONG = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+/* ── State ── */
+const S = {
+  page: 'today',
+  todayDate: new Date(),
+  viewDate: new Date(),
+  weekDate: null,
+  monthDate: new Date(),
+  yearDate: new Date(),
+  brainMonth: new Date(),
+  medsMonth: new Date(),
+  healthMonth: new Date(),
+  symptomsMonth: new Date(),
+  financeMonth: new Date(),
+  businessMonth: new Date(),
+  activeDays: new Set(),
+  saveTimers: {},
+  dailyTasks: [],
+  dailySchedule: {},
+};
+S.weekDate = weekStart(new Date());
+
+/* ── Utils ── */
+const $ = (s, c=document) => c.querySelector(s);
+const $$ = (s, c=document) => [...c.querySelectorAll(s)];
+const pad = n => String(n).padStart(2,'0');
+const iso = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const ym = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}`;
+
+function weekStart(d) {
+  const v = new Date(d);
+  const day = v.getDay();
+  v.setHours(0,0,0,0);
+  v.setDate(v.getDate() - (day === 0 ? 6 : day - 1)); // Mon start
+  return v;
+}
+
+function addDays(d, n) {
+  const v = new Date(d);
+  v.setDate(v.getDate() + n);
+  return v;
+}
+
+function addMonths(d, n) {
+  const v = new Date(d);
+  v.setDate(1);
+  v.setMonth(v.getMonth() + n);
+  return v;
+}
+
+function formatMonth(d) {
+  return `${MONTHS_LONG[d.getMonth()]} ${d.getFullYear()}`;
+}
+
+function formatWeekRange(ws) {
+  const we = addDays(ws, 6);
+  if (ws.getMonth() === we.getMonth()) {
+    return `${MONTHS_SHORT[ws.getMonth()]} ${ws.getDate()} – ${we.getDate()}, ${ws.getFullYear()}`;
+  }
+  return `${MONTHS_SHORT[ws.getMonth()]} ${ws.getDate()} – ${MONTHS_SHORT[we.getMonth()]} ${we.getDate()}, ${we.getFullYear()}`;
+}
+
+function todayISO() { return iso(new Date()); }
+
+function dailyScripture(dateStr) {
+  // deterministic scripture by date
+  let hash = 0;
+  for (const c of dateStr) hash = (hash * 31 + c.charCodeAt(0)) & 0xffffffff;
+  return SCRIPTURES[Math.abs(hash) % SCRIPTURES.length];
+}
+
+/* ── Toast ── */
+function toast(msg = 'Saved') {
+  const t = $('#toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove('show'), 1600);
+}
+
+/* ── API ── */
+async function apiGet(url) {
+  const r = await fetch(url, {credentials:'same-origin'});
+  return r.json();
+}
+async function apiPost(url, body) {
+  const r = await fetch(url, {
+    method:'POST', credentials:'same-origin',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify(body),
+  });
+  return r.json();
+}
+
+async function loadState(type, key) {
+  try {
+    const d = await apiGet(`/api/state/${type}/${key}`);
+    return d.ok ? d.state : null;
+  } catch { return null; }
+}
+
+async function saveState(type, key, state) {
+  try { await apiPost(`/api/state/${type}/${key}`, {state}); } catch {}
+}
+
+function debounceSave(id, fn, ms=1200) {
+  clearTimeout(S.saveTimers[id]);
+  S.saveTimers[id] = setTimeout(fn, ms);
+}
+
+/* ── Active days (calendar dots) ── */
+async function loadActiveDays(yearMonth) {
+  try {
+    const d = await apiGet(`/api/active-days?month=${yearMonth}`);
+    if (d.ok) d.days.forEach(day => S.activeDays.add(day));
+  } catch {}
+}
+
+function markToday() {
+  S.activeDays.add(iso(S.viewDate));
+}
+
+/* ── Navigation ── */
+function showPage(name) {
+  $$('.page').forEach(p => p.classList.remove('active'));
+  $$('.sb-item').forEach(b => b.classList.remove('active'));
+  $(`#page-${name}`).classList.add('active');
+  $$(`.sb-item[data-page="${name}"]`).forEach(b => b.classList.add('active'));
+  S.page = name;
+  window.scrollTo(0,0);
+}
+
+function goToDay(dateStr) {
+  const [y,m,d] = dateStr.split('-').map(Number);
+  S.viewDate = new Date(y, m-1, d);
+  showPage('today');
+  loadToday();
+}
+
+function goToMonth(y, m) {
+  S.monthDate = new Date(y, m, 1);
+  showPage('month');
+  renderMonth();
+}
+
+/* ── DAILY PAGE ── */
+function buildSchedule() {
+  const grid = $('#schedule-grid');
+  grid.innerHTML = '';
+  HOURS.forEach(h => {
+    const time = document.createElement('div');
+    time.className = 'schedule-time';
+    time.textContent = h;
+    const entry = document.createElement('div');
+    entry.className = 'schedule-entry';
+    const input = document.createElement('input');
+    input.dataset.hour = h;
+    input.placeholder = '…';
+    input.value = S.dailySchedule[h] || '';
+    input.addEventListener('input', () => {
+      S.dailySchedule[h] = input.value;
+      debounceSave('today', saveToday);
+    });
+    entry.appendChild(input);
+    grid.appendChild(time);
+    grid.appendChild(entry);
+  });
+}
+
+function buildTasks(tasks) {
+  S.dailyTasks = tasks || [];
+  renderTasks();
+}
+
+function renderTasks() {
+  const list = $('#task-list');
+  list.innerHTML = '';
+  S.dailyTasks.forEach((t, i) => {
+    const row = document.createElement('div');
+    row.className = 'task-row';
+    const check = document.createElement('div');
+    check.className = 'task-check' + (t.done ? ' done' : '');
+    check.addEventListener('click', () => {
+      S.dailyTasks[i].done = !S.dailyTasks[i].done;
+      renderTasks();
+      debounceSave('today', saveToday);
+    });
+    const inp = document.createElement('input');
+    inp.className = 'task-input' + (t.done ? ' done-text' : '');
+    inp.value = t.text || '';
+    inp.placeholder = 'Add a task…';
+    inp.addEventListener('input', () => {
+      S.dailyTasks[i].text = inp.value;
+      debounceSave('today', saveToday);
+    });
+    const rem = document.createElement('button');
+    rem.className = 'remove-btn';
+    rem.textContent = '×';
+    rem.addEventListener('click', () => {
+      S.dailyTasks.splice(i, 1);
+      renderTasks();
+      debounceSave('today', saveToday);
+    });
+    row.appendChild(check);
+    row.appendChild(inp);
+    row.appendChild(rem);
+    list.appendChild(row);
+  });
+}
+
+function setupTodayListeners() {
+  // scripture + date
+  const dateKey = iso(S.viewDate);
+  const sc = dailyScripture(dateKey);
+  $('#daily-scripture').textContent = `"${sc.text}"`;
+  $('#daily-scripture-ref').textContent = `— ${sc.ref}`;
+
+  // truth section
+  $('#reveal-truth-btn').addEventListener('click', () => {
+    const lie = $('#td-lie').value.trim();
+    const match = TRUTH_LIB.find(t => t.match.test(lie));
+    const resp = match || TRUTH_LIB[TRUTH_LIB.length-1];
+    $('#truth-response-text').textContent = resp.text;
+    $('#truth-response-cite').textContent = `— ${resp.ref}`;
+    $('#truth-response').classList.add('show');
+  });
+
+  // day nav
+  $('#prev-day-btn').addEventListener('click', () => {
+    S.viewDate = addDays(S.viewDate, -1);
+    loadToday();
+  });
+  $('#next-day-btn').addEventListener('click', () => {
+    S.viewDate = addDays(S.viewDate, 1);
+    loadToday();
+  });
+
+  // add task
+  $('#add-task-btn').addEventListener('click', () => {
+    S.dailyTasks.push({text:'', done:false});
+    renderTasks();
+    const inputs = $$('#task-list .task-input');
+    if (inputs.length) inputs[inputs.length-1].focus();
+  });
+
+  // autosave on all text fields in today
+  ['td-affirmation','td-lie','td-p1','td-p2','td-p3','td-g1','td-g2','td-g3','td-notes'].forEach(id => {
+    const el = $(`#${id}`);
+    if (el) el.addEventListener('input', () => debounceSave('today', saveToday));
+  });
+}
+
+function updateTodayHeader() {
+  const d = S.viewDate;
+  const today = new Date();
+  const isToday = iso(d) === iso(today);
+  $('#today-eyebrow').textContent = isToday ? 'Daily Planner' : 'Daily Planner — Past Day';
+  $('#today-date-heading').textContent = d.toLocaleDateString('en-US', {weekday:'long', month:'long', day:'numeric', year:'numeric'});
+  const sc = dailyScripture(iso(d));
+  $('#daily-scripture').textContent = `"${sc.text}"`;
+  $('#daily-scripture-ref').textContent = `— ${sc.ref}`;
+  $('#truth-response').classList.remove('show');
+  $('#td-lie').value = '';
+}
+
+async function loadToday() {
+  updateTodayHeader();
+  buildSchedule();
+  const key = iso(S.viewDate);
+  const st = await loadState('today', key);
+  if (st) {
+    $('#td-affirmation').value = st.affirmation || '';
+    $('#td-p1').value = st.p1 || '';
+    $('#td-p2').value = st.p2 || '';
+    $('#td-p3').value = st.p3 || '';
+    $('#td-g1').value = st.g1 || '';
+    $('#td-g2').value = st.g2 || '';
+    $('#td-g3').value = st.g3 || '';
+    $('#td-notes').value = st.notes || '';
+    S.dailySchedule = st.schedule || {};
+    buildSchedule();
+    buildTasks(st.tasks || []);
+  } else {
+    $('#td-affirmation').value = '';
+    $('#td-p1').value = '';
+    $('#td-p2').value = '';
+    $('#td-p3').value = '';
+    $('#td-g1').value = '';
+    $('#td-g2').value = '';
+    $('#td-g3').value = '';
+    $('#td-notes').value = '';
+    S.dailySchedule = {};
+    buildSchedule();
+    buildTasks([]);
+  }
+}
+
+async function saveToday() {
+  const state = {
+    affirmation: $('#td-affirmation').value,
+    p1: $('#td-p1').value,
+    p2: $('#td-p2').value,
+    p3: $('#td-p3').value,
+    g1: $('#td-g1').value,
+    g2: $('#td-g2').value,
+    g3: $('#td-g3').value,
+    notes: $('#td-notes').value,
+    tasks: S.dailyTasks,
+    schedule: S.dailySchedule,
+  };
+  const hasContent = Object.values(state).some(v =>
+    typeof v === 'string' ? v.trim() : (Array.isArray(v) ? v.length : Object.keys(v).length)
+  );
+  await saveState('today', iso(S.viewDate), state);
+  if (hasContent) markToday();
+  toast();
+}
+
+/* ── WEEK PAGE ── */
+function setupWeekListeners() {
+  $('#prev-week-btn').addEventListener('click', () => { S.weekDate = addDays(S.weekDate,-7); loadWeek(); });
+  $('#next-week-btn').addEventListener('click', () => { S.weekDate = addDays(S.weekDate,7); loadWeek(); });
+  $('#today-week-btn').addEventListener('click', () => { S.weekDate = weekStart(new Date()); loadWeek(); });
+}
+
+async function loadWeek() {
+  $('#week-heading').textContent = formatWeekRange(S.weekDate);
+  await loadActiveDays(ym(S.weekDate));
+  const ws = addDays(S.weekDate, 6);
+  if (ws.getMonth() !== S.weekDate.getMonth()) await loadActiveDays(ym(ws));
+
+  const key = iso(S.weekDate);
+  const st = await loadState('week', key) || {};
+  renderWeek(st);
+}
+
+function renderWeek(st={}) {
+  const grid = $('#week-grid');
+  grid.innerHTML = '';
+  const todayStr = todayISO();
+
+  for (let i=0; i<7; i++) {
+    const d = addDays(S.weekDate, i);
+    const dateStr = iso(d);
+    const col = document.createElement('div');
+    col.className = 'week-col' + (dateStr === todayStr ? ' today-col' : '');
+
+    const dow = document.createElement('div');
+    dow.className = 'week-dow';
+    dow.textContent = DAYS_SHORT[d.getDay()];
+
+    const dateDiv = document.createElement('div');
+    dateDiv.className = 'week-date';
+    dateDiv.textContent = d.getDate();
+
+    col.appendChild(dow);
+    col.appendChild(dateDiv);
+
+    if (S.activeDays.has(dateStr)) {
+      const dot = document.createElement('div');
+      dot.className = 'week-dot';
+      col.appendChild(dot);
+    }
+
+    const note = document.createElement('textarea');
+    note.className = 'week-note';
+    note.placeholder = '…';
+    note.value = (st[dateStr] || '');
+    note.addEventListener('input', () => {
+      st[dateStr] = note.value;
+      debounceSave('week', () => saveState('week', iso(S.weekDate), st).then(() => toast()));
+    });
+    col.appendChild(note);
+
+    // click header area → go to day
+    dateDiv.style.cursor = 'pointer';
+    dateDiv.addEventListener('click', (e) => {
+      e.stopPropagation();
+      goToDay(dateStr);
+    });
+    dow.style.cursor = 'pointer';
+    dow.addEventListener('click', () => goToDay(dateStr));
+
+    grid.appendChild(col);
+  }
+}
+
+/* ── MONTH PAGE ── */
+function setupMonthListeners() {
+  $('#prev-month-btn').addEventListener('click', () => { S.monthDate = addMonths(S.monthDate,-1); renderMonth(); });
+  $('#next-month-btn').addEventListener('click', () => { S.monthDate = addMonths(S.monthDate,1); renderMonth(); });
+  $('#today-month-btn').addEventListener('click', () => { S.monthDate = new Date(); renderMonth(); });
+}
+
+async function renderMonth() {
+  $('#month-heading').textContent = formatMonth(S.monthDate);
+  await loadActiveDays(ym(S.monthDate));
+
+  const grid = $('#month-grid');
+  grid.innerHTML = '';
+  const todayStr = todayISO();
+
+  // Day-of-week headers
+  DAYS_SHORT.forEach(d => {
+    const h = document.createElement('div');
+    h.className = 'cal-dow';
+    h.textContent = d;
+    grid.appendChild(h);
+  });
+
+  const y = S.monthDate.getFullYear();
+  const m = S.monthDate.getMonth();
+  const firstDay = new Date(y, m, 1).getDay();
+  const daysInMonth = new Date(y, m+1, 0).getDate();
+  const prevDays = new Date(y, m, 0).getDate();
+
+  // fill prev month
+  for (let i = firstDay - 1; i >= 0; i--) {
+    const cell = document.createElement('div');
+    cell.className = 'cal-day other-month';
+    const num = document.createElement('div');
+    num.className = 'cal-day-num';
+    num.textContent = prevDays - i;
+    cell.appendChild(num);
+    grid.appendChild(cell);
+  }
+
+  // current month
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dateStr = `${y}-${pad(m+1)}-${pad(d)}`;
+    const cell = document.createElement('div');
+    cell.className = 'cal-day' + (dateStr === todayStr ? ' today' : '');
+    cell.addEventListener('click', () => goToDay(dateStr));
+
+    const num = document.createElement('div');
+    num.className = 'cal-day-num';
+    num.textContent = d;
+    cell.appendChild(num);
+
+    if (S.activeDays.has(dateStr)) {
+      const dot = document.createElement('div');
+      dot.className = 'cal-dot';
+      cell.appendChild(dot);
+    }
+    grid.appendChild(cell);
+  }
+
+  // fill next month
+  const total = firstDay + daysInMonth;
+  const remaining = 7 - (total % 7 === 0 ? 7 : total % 7);
+  for (let d = 1; d <= remaining; d++) {
+    const cell = document.createElement('div');
+    cell.className = 'cal-day other-month';
+    const num = document.createElement('div');
+    num.className = 'cal-day-num';
+    num.textContent = d;
+    cell.appendChild(num);
+    grid.appendChild(cell);
+  }
+}
+
+/* ── YEAR PAGE ── */
+function setupYearListeners() {
+  $('#prev-year-btn').addEventListener('click', () => { S.yearDate.setFullYear(S.yearDate.getFullYear()-1); renderYear(); });
+  $('#next-year-btn').addEventListener('click', () => { S.yearDate.setFullYear(S.yearDate.getFullYear()+1); renderYear(); });
+  $('#this-year-btn').addEventListener('click', () => { S.yearDate = new Date(); renderYear(); });
+}
+
+async function renderYear() {
+  const y = S.yearDate.getFullYear();
+  $('#year-heading').textContent = String(y);
+  const grid = $('#year-grid');
+  grid.innerHTML = '';
+  const todayStr = todayISO();
+
+  // load all 12 months of active days
+  for (let m=0; m<12; m++) {
+    await loadActiveDays(`${y}-${pad(m+1)}`);
+  }
+
+  for (let m=0; m<12; m++) {
+    const monthEl = document.createElement('div');
+    monthEl.className = 'year-month';
+    monthEl.addEventListener('click', () => goToMonth(y, m));
+
+    const name = document.createElement('div');
+    name.className = 'year-month-name';
+    name.textContent = MONTHS_SHORT[m];
+    monthEl.appendChild(name);
+
+    const mini = document.createElement('div');
+    mini.className = 'year-mini';
+
+    const firstDay = new Date(y, m, 1).getDay();
+    const daysInMonth = new Date(y, m+1, 0).getDate();
+
+    // blanks
+    for (let b=0; b<firstDay; b++) {
+      const blank = document.createElement('div');
+      blank.className = 'year-mini-day';
+      mini.appendChild(blank);
+    }
+    for (let d=1; d<=daysInMonth; d++) {
+      const dateStr = `${y}-${pad(m+1)}-${pad(d)}`;
+      const cell = document.createElement('div');
+      cell.className = 'year-mini-day'
+        + (S.activeDays.has(dateStr) ? ' has-dot' : '')
+        + (dateStr === todayStr ? ' is-today' : '');
+      cell.textContent = d;
+      mini.appendChild(cell);
+    }
+    monthEl.appendChild(mini);
+    grid.appendChild(monthEl);
+  }
+}
+
+/* ── BRAIN DUMP ── */
+function setupBrainListeners() {
+  $('#prev-brain-btn').addEventListener('click', () => { S.brainMonth = addMonths(S.brainMonth,-1); loadBrain(); });
+  $('#next-brain-btn').addEventListener('click', () => { S.brainMonth = addMonths(S.brainMonth,1); loadBrain(); });
+  $('#brain-text').addEventListener('input', () =>
+    debounceSave('brain', () => saveState('brain', ym(S.brainMonth), {text: $('#brain-text').value}).then(() => toast()))
+  );
+}
+async function loadBrain() {
+  $('#brain-month-label').textContent = formatMonth(S.brainMonth);
+  const st = await loadState('brain', ym(S.brainMonth));
+  $('#brain-text').value = st ? (st.text || '') : '';
+}
+
+/* ── TRUTH PAGE ── */
+function setupTruthPage() {
+  const sc = dailyScripture(todayISO());
+  $('#truth-page-scripture').textContent = `"${sc.text}"`;
+  $('#truth-page-ref').textContent = `— ${sc.ref}`;
+  $('#truth-page-reveal-btn').addEventListener('click', () => {
+    const lie = $('#truth-lie-input').value.trim();
+    const match = TRUTH_LIB.find(t => t.match.test(lie));
+    const resp = match || TRUTH_LIB[TRUTH_LIB.length-1];
+    $('#truth-page-response-text').textContent = resp.text;
+    $('#truth-page-response-cite').textContent = `— ${resp.ref}`;
+    $('#truth-page-response').classList.add('show');
+  });
+}
+
+/* ── MEDICATION ── */
+function setupMedsListeners() {
+  $('#prev-meds-btn').addEventListener('click', () => { S.medsMonth = addMonths(S.medsMonth,-1); loadMeds(); });
+  $('#next-meds-btn').addEventListener('click', () => { S.medsMonth = addMonths(S.medsMonth,1); loadMeds(); });
+  $('#add-med-btn').addEventListener('click', () => addMedCard());
+}
+
+async function loadMeds() {
+  $('#meds-month-label').textContent = formatMonth(S.medsMonth);
+  const st = await loadState('meds', ym(S.medsMonth));
+  $('#meds-list').innerHTML = '';
+  const meds = st ? (st.meds || []) : [];
+  meds.forEach(m => addMedCard(m));
+}
+
+function getMedsState() {
+  const cards = $$('#meds-list .med-card');
+  return cards.map(c => ({
+    name: c.querySelector('[data-field=name]').value,
+    dose: c.querySelector('[data-field=dose]').value,
+    am: c.querySelector('[data-time=am]').checked,
+    noon: c.querySelector('[data-time=noon]').checked,
+    pm: c.querySelector('[data-time=pm]').checked,
+    bedtime: c.querySelector('[data-time=bedtime]').checked,
+    prn: c.querySelector('[data-time=prn]').checked,
+    notes: c.querySelector('[data-field=notes]').value,
+  }));
+}
+
+function saveMeds() {
+  saveState('meds', ym(S.medsMonth), {meds: getMedsState()}).then(() => toast());
+}
+
+function addMedCard(data={}) {
+  const list = $('#meds-list');
+  const card = document.createElement('div');
+  card.className = 'med-card';
+  card.innerHTML = `
+    <button class="remove-btn" title="Remove">×</button>
+    <div class="med-name-row">
+      <input data-field="name" class="field-input" placeholder="Medication name…" value="${data.name||''}" style="flex:2;">
+      <input data-field="dose" class="field-input" placeholder="Dose…" value="${data.dose||''}" style="flex:1;">
+    </div>
+    <div class="med-times">
+      <label><input type="checkbox" data-time="am" ${data.am?'checked':''}> AM</label>
+      <label><input type="checkbox" data-time="noon" ${data.noon?'checked':''}> Noon</label>
+      <label><input type="checkbox" data-time="pm" ${data.pm?'checked':''}> PM</label>
+      <label><input type="checkbox" data-time="bedtime" ${data.bedtime?'checked':''}> Bedtime</label>
+      <label><input type="checkbox" data-time="prn" ${data.prn?'checked':''}> As needed</label>
+    </div>
+    <input data-field="notes" class="field-input" placeholder="Notes (with food, refill date…)" value="${data.notes||''}">
+  `;
+  card.querySelector('.remove-btn').addEventListener('click', () => {
+    card.remove(); debounceSave('meds', saveMeds);
+  });
+  card.querySelectorAll('input').forEach(i => i.addEventListener('input', () => debounceSave('meds', saveMeds)));
+  list.appendChild(card);
+}
+
+/* ── HEALTH APPOINTMENTS ── */
+function setupHealthListeners() {
+  $('#prev-health-btn').addEventListener('click', () => { S.healthMonth = addMonths(S.healthMonth,-1); loadHealth(); });
+  $('#next-health-btn').addEventListener('click', () => { S.healthMonth = addMonths(S.healthMonth,1); loadHealth(); });
+  $('#add-health-btn').addEventListener('click', () => addHealthCard());
+}
+
+async function loadHealth() {
+  $('#health-month-label').textContent = formatMonth(S.healthMonth);
+  const st = await loadState('health', ym(S.healthMonth));
+  $('#health-list').innerHTML = '';
+  (st ? (st.appts || []) : []).forEach(a => addHealthCard(a));
+}
+
+function getHealthState() {
+  return $$('#health-list .tracker-appt-card').map(c => ({
+    date: c.querySelector('[data-f=date]').value,
+    doctor: c.querySelector('[data-f=doctor]').value,
+    address: c.querySelector('[data-f=address]').value,
+    questions: c.querySelector('[data-f=questions]').value,
+  }));
+}
+
+function saveHealth() {
+  saveState('health', ym(S.healthMonth), {appts: getHealthState()}).then(() => toast());
+}
+
+function addHealthCard(data={}) {
+  const list = $('#health-list');
+  const card = document.createElement('div');
+  card.className = 'card tracker-appt-card';
+  card.style.cssText = 'position:relative;margin-bottom:0.75rem;';
+  card.innerHTML = `
+    <button class="remove-btn" style="position:absolute;top:0.75rem;right:0.75rem;">×</button>
+    <div style="display:grid;grid-template-columns:130px 1fr;gap:0.5rem;margin-bottom:0.5rem;padding-right:2rem;">
+      <input data-f="date" class="field-input" placeholder="Date &amp; time…" value="${data.date||''}">
+      <input data-f="doctor" class="field-input" placeholder="Doctor / Appointment type…" value="${data.doctor||''}">
+    </div>
+    <input data-f="address" class="field-input" placeholder="Address or telehealth link…" value="${data.address||''}" style="margin-bottom:0.5rem;">
+    <textarea data-f="questions" class="field-textarea manrope" placeholder="Questions to ask / what to bring…" rows="2">${data.questions||''}</textarea>
+  `;
+  card.querySelector('.remove-btn').addEventListener('click', () => {
+    card.remove(); debounceSave('health', saveHealth);
+  });
+  card.querySelectorAll('input, textarea').forEach(i => i.addEventListener('input', () => debounceSave('health', saveHealth)));
+  list.appendChild(card);
+}
+
+/* ── SYMPTOMS ── */
+function setupSymptomsListeners() {
+  $('#prev-symptoms-btn').addEventListener('click', () => { S.symptomsMonth = addMonths(S.symptomsMonth,-1); loadSymptoms(); });
+  $('#next-symptoms-btn').addEventListener('click', () => { S.symptomsMonth = addMonths(S.symptomsMonth,1); loadSymptoms(); });
+  $('#add-symptom-btn').addEventListener('click', () => addSymptomRow());
+}
+
+async function loadSymptoms() {
+  $('#symptoms-month-label').textContent = formatMonth(S.symptomsMonth);
+  const st = await loadState('symptoms', ym(S.symptomsMonth));
+  $('#symptoms-list').innerHTML = '';
+  (st ? (st.symptoms || []) : []).forEach(s => addSymptomRow(s));
+}
+
+function getSymptomsState() {
+  return $$('#symptoms-list .symptom-row').map(r => ({
+    symptom: r.querySelector('[data-f=symptom]').value,
+    severity: r.querySelector('[data-f=severity]').value,
+    time: r.querySelector('[data-f=time]').value,
+  }));
+}
+
+function saveSymptoms() {
+  saveState('symptoms', ym(S.symptomsMonth), {symptoms: getSymptomsState()}).then(() => toast());
+}
+
+function addSymptomRow(data={}) {
+  const list = $('#symptoms-list');
+  const row = document.createElement('div');
+  row.className = 'symptom-row';
+  row.style.cssText = 'display:grid;grid-template-columns:2fr 80px 90px auto;gap:0.5rem;align-items:center;padding:0.4rem 0;border-bottom:1px solid rgba(0,0,0,0.05);';
+  row.innerHTML = `
+    <input data-f="symptom" class="field-input" placeholder="Symptom…" value="${data.symptom||''}">
+    <input data-f="severity" class="field-input" placeholder="1–10" value="${data.severity||''}">
+    <input data-f="time" class="field-input" placeholder="Time…" value="${data.time||''}">
+    <button class="remove-btn">×</button>
+  `;
+  row.querySelector('.remove-btn').addEventListener('click', () => {
+    row.remove(); debounceSave('symptoms', saveSymptoms);
+  });
+  row.querySelectorAll('input').forEach(i => i.addEventListener('input', () => debounceSave('symptoms', saveSymptoms)));
+  list.appendChild(row);
+}
+
+/* ── FINANCE ── */
+function setupFinanceListeners() {
+  $('#prev-finance-btn').addEventListener('click', () => { S.financeMonth = addMonths(S.financeMonth,-1); loadFinance(); });
+  $('#next-finance-btn').addEventListener('click', () => { S.financeMonth = addMonths(S.financeMonth,1); loadFinance(); });
+  $('#add-income-btn').addEventListener('click', () => addFinanceRow('income'));
+  $('#add-bill-btn').addEventListener('click', () => addBillRow());
+  $('#add-savings-btn').addEventListener('click', () => addSavingsRow());
+}
+
+async function loadFinance() {
+  $('#finance-month-label').textContent = formatMonth(S.financeMonth);
+  const st = await loadState('finance', ym(S.financeMonth));
+  $('#income-list').innerHTML = '';
+  $('#bills-list').innerHTML = '';
+  $('#savings-list').innerHTML = '';
+  if (st) {
+    (st.income||[]).forEach(r => addFinanceRow('income', r));
+    (st.bills||[]).forEach(r => addBillRow(r));
+    (st.savings||[]).forEach(r => addSavingsRow(r));
+  }
+  calcFinanceTotals();
+}
+
+function getFinanceState() {
+  return {
+    income: $$('#income-list .finance-row').map(r => ({
+      date: r.querySelector('[data-f=date]').value,
+      source: r.querySelector('[data-f=source]').value,
+      amount: r.querySelector('[data-f=amount]').value,
+    })),
+    bills: $$('#bills-list .bill-row').map(r => ({
+      due: r.querySelector('[data-f=due]').value,
+      name: r.querySelector('[data-f=name]').value,
+      amount: r.querySelector('[data-f=amount]').value,
+      paid: r.querySelector('[data-f=paid]').checked,
+    })),
+    savings: $$('#savings-list .savings-row').map(r => ({
+      goal: r.querySelector('[data-f=goal]').value,
+      target: r.querySelector('[data-f=target]').value,
+      saved: r.querySelector('[data-f=saved]').value,
+    })),
+  };
+}
+
+function saveFinance() {
+  calcFinanceTotals();
+  saveState('finance', ym(S.financeMonth), getFinanceState()).then(() => toast());
+}
+
+function calcFinanceTotals() {
+  let incomeSum = 0;
+  $$('#income-list .finance-row').forEach(r => {
+    incomeSum += parseFloat((r.querySelector('[data-f=amount]').value || '').replace(/[^0-9.]/g,'')) || 0;
+  });
+  $('#income-total').textContent = '$' + incomeSum.toFixed(2);
+
+  let billsSum = 0;
+  $$('#bills-list .bill-row').forEach(r => {
+    billsSum += parseFloat((r.querySelector('[data-f=amount]').value || '').replace(/[^0-9.]/g,'')) || 0;
+  });
+  $('#bills-total').textContent = '$' + billsSum.toFixed(2);
+}
+
+function addFinanceRow(type, data={}) {
+  const list = $('#income-list');
+  const row = document.createElement('div');
+  row.className = 'finance-row';
+  row.innerHTML = `
+    <input data-f="date" placeholder="Date" value="${data.date||''}">
+    <input data-f="source" placeholder="Source…" value="${data.source||''}">
+    <input data-f="amount" placeholder="$0.00" value="${data.amount||''}">
+    <button class="remove-btn">×</button>
+  `;
+  row.querySelector('.remove-btn').addEventListener('click', () => { row.remove(); debounceSave('finance', saveFinance); });
+  row.querySelectorAll('input').forEach(i => i.addEventListener('input', () => debounceSave('finance', saveFinance)));
+  list.appendChild(row);
+}
+
+function addBillRow(data={}) {
+  const list = $('#bills-list');
+  const row = document.createElement('div');
+  row.className = 'bill-row';
+  row.style.cssText = 'display:grid;grid-template-columns:auto 100px 1fr 90px auto;gap:0.5rem;align-items:center;padding:0.4rem 0;border-bottom:1px solid rgba(0,0,0,0.05);';
+  const checkDiv = document.createElement('div');
+  checkDiv.className = 'task-check' + (data.paid ? ' done' : '');
+  checkDiv.addEventListener('click', () => {
+    checkDiv.classList.toggle('done');
+    data.paid = checkDiv.classList.contains('done');
+    debounceSave('finance', saveFinance);
+  });
+  row.innerHTML = `
+    <input data-f="due" placeholder="Due date" value="${data.due||''}">
+    <input data-f="name" placeholder="Bill name…" value="${data.name||''}">
+    <input data-f="amount" placeholder="$0.00" value="${data.amount||''}">
+    <button class="remove-btn">×</button>
+  `;
+  row.insertBefore(checkDiv, row.firstChild);
+  row.querySelector('.remove-btn').addEventListener('click', () => { row.remove(); debounceSave('finance', saveFinance); });
+  row.querySelectorAll('input').forEach(i => i.addEventListener('input', () => debounceSave('finance', saveFinance)));
+  list.appendChild(row);
+}
+
+function addSavingsRow(data={}) {
+  const list = $('#savings-list');
+  const row = document.createElement('div');
+  row.className = 'savings-row';
+  row.style.cssText = 'display:grid;grid-template-columns:1fr 100px 100px auto;gap:0.5rem;align-items:center;padding:0.4rem 0;border-bottom:1px solid rgba(0,0,0,0.05);';
+  row.innerHTML = `
+    <input data-f="goal" placeholder="Goal / Dream…" value="${data.goal||''}">
+    <input data-f="target" placeholder="Target $" value="${data.target||''}">
+    <input data-f="saved" placeholder="Saved $" value="${data.saved||''}">
+    <button class="remove-btn">×</button>
+  `;
+  row.querySelector('.remove-btn').forEach ? null :
+    row.querySelector('.remove-btn').addEventListener('click', () => { row.remove(); debounceSave('finance', saveFinance); });
+  row.querySelectorAll('input').forEach(i => i.addEventListener('input', () => debounceSave('finance', saveFinance)));
+  list.appendChild(row);
+}
+
+/* ── GROCERY ── */
+function setupGroceryListeners() {
+  $('#add-grocery-btn').addEventListener('click', () => addGroceryRow());
+  $('#clear-done-grocery-btn').addEventListener('click', () => {
+    $$('#grocery-list .grocery-row').forEach(r => {
+      if (r.querySelector('.grocery-check').classList.contains('done')) r.remove();
+    });
+    debounceSave('grocery', saveGrocery, 300);
+  });
+}
+
+async function loadGrocery() {
+  const st = await loadState('grocery', 'list');
+  $('#grocery-list').innerHTML = '';
+  (st ? (st.items||[]) : []).forEach(item => addGroceryRow(item));
+}
+
+function getGroceryState() {
+  return {
+    items: $$('#grocery-list .grocery-row').map(r => ({
+      text: r.querySelector('.grocery-item-input').value,
+      done: r.querySelector('.grocery-check').classList.contains('done'),
+    })),
+  };
+}
+
+function saveGrocery() {
+  saveState('grocery', 'list', getGroceryState()).then(() => toast());
+}
+
+function addGroceryRow(data={}) {
+  const list = $('#grocery-list');
+  const row = document.createElement('div');
+  row.className = 'grocery-row';
+  const check = document.createElement('div');
+  check.className = 'grocery-check' + (data.done ? ' done' : '');
+  check.addEventListener('click', () => {
+    check.classList.toggle('done');
+    inp.classList.toggle('done-item', check.classList.contains('done'));
+    debounceSave('grocery', saveGrocery);
+  });
+  const inp = document.createElement('input');
+  inp.className = 'grocery-item-input' + (data.done ? ' done-item' : '');
+  inp.value = data.text || '';
+  inp.placeholder = 'Add item…';
+  inp.addEventListener('input', () => debounceSave('grocery', saveGrocery));
+  const rem = document.createElement('button');
+  rem.className = 'remove-btn';
+  rem.textContent = '×';
+  rem.addEventListener('click', () => { row.remove(); debounceSave('grocery', saveGrocery, 300); });
+  row.appendChild(check);
+  row.appendChild(inp);
+  row.appendChild(rem);
+  list.appendChild(row);
+  inp.focus();
+}
+
+/* ── BUSINESS ── */
+function setupBusinessListeners() {
+  $('#prev-business-btn').addEventListener('click', () => { S.businessMonth = addMonths(S.businessMonth,-1); loadBusiness(); });
+  $('#next-business-btn').addEventListener('click', () => { S.businessMonth = addMonths(S.businessMonth,1); loadBusiness(); });
+  $('#add-biz-btn').addEventListener('click', () => addBizRow());
+  $('#biz-notes').addEventListener('input', () => debounceSave('business', saveBusiness));
+}
+
+async function loadBusiness() {
+  $('#business-month-label').textContent = formatMonth(S.businessMonth);
+  const st = await loadState('business', ym(S.businessMonth));
+  $('#biz-list').innerHTML = '';
+  if (st) {
+    (st.entries||[]).forEach(e => addBizRow(e));
+    $('#biz-notes').value = st.notes || '';
+  } else {
+    $('#biz-notes').value = '';
+  }
+  calcBizTotals();
+}
+
+function getBizState() {
+  return {
+    entries: $$('#biz-list .biz-row').map(r => ({
+      project: r.querySelector('[data-f=project]').value,
+      expense: r.querySelector('[data-f=expense]').value,
+      revenue: r.querySelector('[data-f=revenue]').value,
+    })),
+    notes: $('#biz-notes').value,
+  };
+}
+
+function saveBusiness() {
+  calcBizTotals();
+  saveState('business', ym(S.businessMonth), getBizState()).then(() => toast());
+}
+
+function calcBizTotals() {
+  let exp=0, rev=0;
+  $$('#biz-list .biz-row').forEach(r => {
+    exp += parseFloat((r.querySelector('[data-f=expense]').value||'').replace(/[^0-9.]/g,''))||0;
+    rev += parseFloat((r.querySelector('[data-f=revenue]').value||'').replace(/[^0-9.]/g,''))||0;
+  });
+  $('#biz-expense-total').textContent = '$'+exp.toFixed(2);
+  $('#biz-revenue-total').textContent = '$'+rev.toFixed(2);
+}
+
+function addBizRow(data={}) {
+  const list = $('#biz-list');
+  const row = document.createElement('div');
+  row.className = 'biz-row';
+  row.style.cssText = 'display:grid;grid-template-columns:1fr 90px 90px auto;gap:0.5rem;align-items:center;padding:0.4rem 0;border-bottom:1px solid rgba(0,0,0,0.05);';
+  row.innerHTML = `
+    <input data-f="project" class="field-input" placeholder="Project / Product…" value="${data.project||''}">
+    <input data-f="expense" class="field-input" placeholder="$0.00" value="${data.expense||''}">
+    <input data-f="revenue" class="field-input" placeholder="$0.00" value="${data.revenue||''}">
+    <button class="remove-btn">×</button>
+  `;
+  row.querySelector('.remove-btn').addEventListener('click', () => { row.remove(); debounceSave('business', saveBusiness); });
+  row.querySelectorAll('input').forEach(i => i.addEventListener('input', () => debounceSave('business', saveBusiness)));
+  list.appendChild(row);
+}
+
+/* ── GOALS ── */
+function setupGoalsListeners() {
+  $('#add-goal-btn').addEventListener('click', () => addGoalCard());
+}
+
+async function loadGoals() {
+  const st = await loadState('goals', 'list');
+  $('#goals-list').innerHTML = '';
+  (st ? (st.goals||[]) : []).forEach(g => addGoalCard(g));
+}
+
+function getGoalsState() {
+  return {
+    goals: $$('#goals-list .goal-card').map(c => ({
+      goal: c.querySelector('[data-f=goal]').value,
+      date: c.querySelector('[data-f=date]').value,
+      notes: c.querySelector('[data-f=notes]').value,
+    })),
+  };
+}
+
+function saveGoals() {
+  saveState('goals', 'list', getGoalsState()).then(() => toast());
+}
+
+function addGoalCard(data={}) {
+  const list = $('#goals-list');
+  const card = document.createElement('div');
+  card.className = 'goal-card';
+  card.innerHTML = `
+    <input data-f="goal" placeholder="What are you building toward?" value="${data.goal||''}">
+    <input data-f="date" type="date" value="${data.date||''}">
+    <button class="remove-btn">×</button>
+  `;
+  // add notes row below
+  const noteRow = document.createElement('div');
+  noteRow.style.cssText = 'grid-column:1/-1;padding-top:0.25rem;';
+  const notesInp = document.createElement('input');
+  notesInp.dataset.f = 'notes';
+  notesInp.className = 'field-input';
+  notesInp.placeholder = 'Notes on progress…';
+  notesInp.value = data.notes || '';
+  notesInp.addEventListener('input', () => debounceSave('goals', saveGoals));
+  noteRow.appendChild(notesInp);
+  card.appendChild(noteRow);
+  card.querySelector('.remove-btn').addEventListener('click', () => { card.remove(); debounceSave('goals', saveGoals, 300); });
+  card.querySelectorAll('input').forEach(i => i.addEventListener('input', () => debounceSave('goals', saveGoals)));
+  list.appendChild(card);
+}
+
+/* ── INIT ── */
+async function init() {
+  // Wire sidebar nav
+  $$('.sb-item[data-page]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const page = btn.dataset.page;
+      showPage(page);
+      if (page === 'today') loadToday();
+      else if (page === 'week') loadWeek();
+      else if (page === 'month') renderMonth();
+      else if (page === 'year') renderYear();
+      else if (page === 'brain') loadBrain();
+      else if (page === 'meds') loadMeds();
+      else if (page === 'health') loadHealth();
+      else if (page === 'symptoms') loadSymptoms();
+      else if (page === 'finance') loadFinance();
+      else if (page === 'grocery') loadGrocery();
+      else if (page === 'business') loadBusiness();
+      else if (page === 'goals') loadGoals();
+    });
+  });
+
+  // Setup all listeners
+  setupTodayListeners();
+  setupWeekListeners();
+  setupMonthListeners();
+  setupYearListeners();
+  setupBrainListeners();
+  setupTruthPage();
+  setupMedsListeners();
+  setupHealthListeners();
+  setupSymptomsListeners();
+  setupFinanceListeners();
+  setupGroceryListeners();
+  setupBusinessListeners();
+  setupGoalsListeners();
+
+  // Month labels
+  $('#brain-month-label').textContent = formatMonth(S.brainMonth);
+  $('#meds-month-label').textContent = formatMonth(S.medsMonth);
+  $('#health-month-label').textContent = formatMonth(S.healthMonth);
+  $('#symptoms-month-label').textContent = formatMonth(S.symptomsMonth);
+  $('#finance-month-label').textContent = formatMonth(S.financeMonth);
+  $('#business-month-label').textContent = formatMonth(S.businessMonth);
+
+  // Load initial page
+  await loadToday();
+  await loadActiveDays(ym(S.viewDate));
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
