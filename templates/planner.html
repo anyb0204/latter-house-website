@@ -74,16 +74,15 @@ body{
 }
 .sb-mono{
   width:44px;height:44px;
-  border:1.5px solid var(--sage);
   border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
   flex-shrink:0;
+  background:var(--cream);
 }
-.sb-mono span{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1rem;
-  color:var(--sage);
-  letter-spacing:0.04em;
+.sb-mono img{
+  width:100%;height:100%;
+  object-fit:contain;
+  display:block;
 }
 .sb-title{
   font-family:'Cormorant Garamond',serif;
@@ -690,7 +689,7 @@ body{
 <!-- ══════════════════════ SIDEBAR ══════════════════════ -->
 <nav id="sidebar">
   <div class="sb-logo">
-    <div class="sb-mono"><span>lhl</span></div>
+    <div class="sb-mono"><img src="/static/lhl-logo.png" alt="Latter House Life"></div>
     <div class="sb-title">Latter House<em>Life Planner</em></div>
   </div>
 
